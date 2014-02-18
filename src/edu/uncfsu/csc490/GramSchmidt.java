@@ -18,71 +18,18 @@ public class GramSchmidt {
 			v1[j] = v[j];
 			
 			for (int i = 0; i <= (j-1); i++) {
-				aij = (dotProduct(v1[i], v[j])) / (Math.pow(magnitude(v1[i]), 2));
-				
+				aij = (VectorOp.dotProduct(v1[i], v[j])) / (Math.pow(VectorOp.magnitude(v1[i]), 2));
+
 				if (reducedBasis && Math.abs(aij) > .5) {
 					reducedBasis = false;
 				}
 				
-				v1[j] = subtract(v1[j], (scalarMult(aij, v1[i])));
+				v1[j] = VectorOp.subtract(v1[j], (VectorOp.scalarMult(aij, v1[i])));
 			}
 		}
 
 		return v1;
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public static double dotProduct(Vector a, Vector b) {
-		  if(a.size() != b.size()) {
-			  System.out.println("Invalid dimensions - trying to find dot product");
-			  System.exit(1);
-		  }
-
-		  double sum = 0;
-		  for(int i = 0; i < a.size(); i++)
-			  sum += Double.parseDouble(a.elementAt(i).toString()) * 
-			  				Double.parseDouble(b.elementAt(i).toString()); 
-		  
-		  return sum;
-		}
-	
-	@SuppressWarnings("rawtypes")
-    public static double magnitude(Vector a) {
-        return Math.sqrt(dotProduct(a, a));
-    }
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Vector subtract(Vector a, Vector b) {
-		Vector c = (Vector)a.clone();
-		for (int i = 0; i < a.size(); i++) {
-			double value = Double.parseDouble(a.elementAt(i).toString()) - 
-							Double.parseDouble(b.elementAt(i).toString()); 
-			c.set(i, value);
-		}
-		return c;
-    }
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Vector scalarMult(double scalar, Vector a) {
-        Vector c = (Vector) a.clone();
-		for (int i = 0; i < a.size(); i++) {
-        	double value = scalar * Double.parseDouble(a.get(i).toString());
-        	c.set(i, value);
-        }
-            
-        return c;
-    }
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Vector add(Vector a, Vector b) {
-		Vector c = (Vector)a.clone();
-		for (int i = 0; i < a.size(); i++) {
-			double value = Double.parseDouble(a.elementAt(i).toString()) + 
-							Double.parseDouble(b.elementAt(i).toString()); 
-			c.set(i, value);
-		}
-		return c;
-    }
 	
 	@SuppressWarnings({ "rawtypes" })
 	public static void isReducedBasis(Vector[] v, Vector[] v1) {
@@ -92,12 +39,12 @@ public class GramSchmidt {
 			int n = v1[0].size();
 			
 			for (int j = 0; j < n-2; j++) {
-				double rhs = .75 * Math.pow(magnitude(v1[j]), 2);
+				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
 				
-				double ajj = (dotProduct(v1[j], v[j+1])) / (Math.pow(magnitude(v1[j]), 2));
-				Vector x = scalarMult(ajj, v1[j]); 
-				x = add(v1[j+1], x);
-				double lhs = Math.pow(magnitude(x), 2);
+				double ajj = (VectorOp.dotProduct(v1[j], v[j+1])) / (Math.pow(VectorOp.magnitude(v1[j]), 2));
+				Vector x = VectorOp.scalarMult(ajj, v1[j]); 
+				x = VectorOp.add(v1[j+1], x);
+				double lhs = Math.pow(VectorOp.magnitude(x), 2);
 				
 				if (lhs >= rhs) {
 					reducedBasis = true;
@@ -113,6 +60,10 @@ public class GramSchmidt {
 			return;
 		}
 		
+	}
+	
+	public static boolean getIsReduced() {
+		return reducedBasis;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -156,6 +107,10 @@ public class GramSchmidt {
 			System.out.println("\nM is a reduced basis.");
 		}
 		
+	}
+
+	public static double getAij() {
+		return aij;
 	}
 }
  
