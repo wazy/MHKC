@@ -17,6 +17,10 @@ public class LLL {
 		int n = v.length;
 		Vector[] v1 = GramSchmidt.execute(v);
 		
+		printMatrix(v);
+		System.out.println();
+		printMatrix(v1);
+		
 		done = false;
 		
 		while (!done)
@@ -29,29 +33,36 @@ public class LLL {
 						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(aij+.5), v[i]));
 					}
 				}
-
+			}
+			
+			boolean pass = false;
+			
+			for (int j = 0; j < v.length - 1; j++) {
+				
 				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
 					
 				double ajj = (VectorOp.dotProduct(v1[j], v[j+1])) / (Math.pow(VectorOp.magnitude(v1[j]), 2));
 				Vector x = VectorOp.scalarMult(ajj, v1[j]); 
 				x = VectorOp.add(v1[j+1], x);
 				double lhs = Math.pow(VectorOp.magnitude(x), 2);
-				
-				System.out.println(lhs);
-				System.out.println(rhs);
+
+				//System.out.println(lhs);
+				//System.out.println(rhs);
 				
 				if (lhs < rhs) {
-					System.out.println("TAKE");
 					Vector temp = new Vector();
 					temp = v[j];
 					v[j] = v[j+1];
 					v[j+1] = temp;
+					pass = true;
 				}
-				else {
-					done = true;
-				}
-				v1 = GramSchmidt.execute(v);
 			}
+			if (!pass) {
+				done = true;
+			}
+			v1 = GramSchmidt.execute(v);
+			System.out.println();
+			printMatrix(v1);
 		}
 		return v;
 	}
@@ -71,9 +82,21 @@ public class LLL {
 		
 		int count = 0;
 
-		Vector[] v = new Vector[3];
+		Vector[] v = new Vector[10];
 		
-		BufferedReader in = new BufferedReader(new FileReader("in/simple.txt"));
+		/* 
+		 * IN:
+		 * 1 1 1
+		 * 1 0 1
+		 * 1 1 0
+		 * 
+		 * EXPECTED OUT:
+		 * 0 -1 0
+		 * 1 0 0
+		 * 0 0 1
+		 */
+		
+		BufferedReader in = new BufferedReader(new FileReader("in/example.txt"));
 		String line = null;
 		
 		while((line = in.readLine()) != null) {
@@ -89,6 +112,8 @@ public class LLL {
 		in.close();
 		
 		v = reduce(v);
+		
+		System.out.println();
 		
 		printMatrix(v);
 		
