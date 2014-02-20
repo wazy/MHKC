@@ -4,27 +4,31 @@ import java.util.Vector;
 
 public class GramSchmidt {
 
-	private static double aij = 0;
+	private static double a[][];
 	
 	private static boolean reducedBasis = true;
 	
 	@SuppressWarnings("rawtypes")
 	public static Vector[] execute(Vector[] v) {
-		Vector[] v1 = v.clone();
-		
 		int n = v[0].size();
+		
+		Vector[] v1 = new Vector[n];
+		
+		a = new double[n][n];
+		
+		v1[0] = v[0];
 		
 		for (int j = 1; j <= n-1; j++) {
 			v1[j] = v[j];
 			
 			for (int i = 0; i <= (j-1); i++) {
-				aij = (VectorOp.dotProduct(v1[i], v[j])) / (Math.pow(VectorOp.magnitude(v1[i]), 2));
+				a[i][j] = (VectorOp.dotProduct(v1[i], v[j])) / (Math.pow(VectorOp.magnitude(v1[i]), 2));
 
-				if (reducedBasis && Math.abs(aij) > .5) {
+				if (reducedBasis && Math.abs(a[i][j]) > .5) {
 					reducedBasis = false;
 				}
 				
-				v1[j] = VectorOp.subtract(v1[j], (VectorOp.scalarMult(aij, v1[i])));
+				v1[j] = VectorOp.subtract(v1[j], (VectorOp.scalarMult(a[i][j], v1[i])));
 			}
 		}
 
@@ -38,11 +42,13 @@ public class GramSchmidt {
 			
 			int n = v1[0].size();
 			
+			a = new double[n][n];
+			
 			for (int j = 0; j < n-2; j++) {
 				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
 				
-				double ajj = (VectorOp.dotProduct(v1[j], v[j+1])) / (Math.pow(VectorOp.magnitude(v1[j]), 2));
-				Vector x = VectorOp.scalarMult(ajj, v1[j]); 
+				a[j][j] = (VectorOp.dotProduct(v1[j], v[j+1])) / (Math.pow(VectorOp.magnitude(v1[j]), 2));
+				Vector x = VectorOp.scalarMult(a[j][j], v1[j]); 
 				x = VectorOp.add(v1[j+1], x);
 				double lhs = Math.pow(VectorOp.magnitude(x), 2);
 				
@@ -109,8 +115,8 @@ public class GramSchmidt {
 		
 	}
 
-	public static double getAij() {
-		return aij;
+	public static double[][] getA() {
+		return a;
 	}
 }
  

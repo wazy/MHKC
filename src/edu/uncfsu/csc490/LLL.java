@@ -9,7 +9,7 @@ import java.util.Vector;
 public class LLL {
 
 	public static boolean done;
-	public static double aij;
+	public static double[][] a;
 
 	@SuppressWarnings({ "rawtypes" })
 	public static Vector[] reduce(Vector[] v) {
@@ -17,20 +17,18 @@ public class LLL {
 		int n = v.length;
 		Vector[] v1 = GramSchmidt.execute(v);
 		
-		printMatrix(v);
+		a = GramSchmidt.getA();
+
 		System.out.println();
-		printMatrix(v1);
 		
 		done = false;
 		
 		while (!done)
 		{
-			for (int j = 1; j < n-1; j++) {
-				for (int i = j-1; i > 0; i--) {
-					aij = (VectorOp.dotProduct(v1[i], v[j])) / (Math.pow(VectorOp.magnitude(v1[i]), 2));
-					
-					if (Math.abs(aij) > .5) {
-						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(aij+.5), v[i]));
+			for (int j = 1; j <= n-1; j++) {
+				for (int i = j-1; i >= 0; i--) {
+					if (Math.abs(a[i][j]) > .5) {
+						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(a[i][j]+.5), v[i]));
 					}
 				}
 			}
@@ -41,13 +39,10 @@ public class LLL {
 				
 				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
 					
-				double ajj = (VectorOp.dotProduct(v1[j], v[j+1])) / (Math.pow(VectorOp.magnitude(v1[j]), 2));
+				double ajj = a[j][j+1];
 				Vector x = VectorOp.scalarMult(ajj, v1[j]); 
 				x = VectorOp.add(v1[j+1], x);
 				double lhs = Math.pow(VectorOp.magnitude(x), 2);
-
-				//System.out.println(lhs);
-				//System.out.println(rhs);
 				
 				if (lhs < rhs) {
 					Vector temp = new Vector();
@@ -61,8 +56,7 @@ public class LLL {
 				done = true;
 			}
 			v1 = GramSchmidt.execute(v);
-			System.out.println();
-			printMatrix(v1);
+			a = GramSchmidt.getA();
 		}
 		return v;
 	}
@@ -112,8 +106,6 @@ public class LLL {
 		in.close();
 		
 		v = reduce(v);
-		
-		System.out.println();
 		
 		printMatrix(v);
 		
