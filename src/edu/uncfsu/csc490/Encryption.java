@@ -13,87 +13,84 @@ public class Encryption {
 		}
 	}
 	
+	/* 2X1 multiplied with 2X2 = 2X1 */
 	public static int[][] matrixMultiply(int A[][], int B[][]) {
 		int[][] C = new int[2][1];
-		for (int i = 0; i < 2; i++) { // aRow
-			for (int j = 0; j < 2; j++) { // bColumn
-				for (int k = 0; k < 1; k++) { // aColumn
-					C[i][j] = A[i][k] * B[k][j];
-				}
-			}
-		}
+		
+		int a = A[0][0];
+		int b = A[1][0];
+		
+		int c = B[0][0];
+		int d = B[0][1];
+		int e = B[1][0];
+		int f = B[1][1];
+		
+		C[0][0] = a*c + b*d;
+		C[1][0] = a*e + b*f;
 
 		return C;
 	}
 
 	public static void main(String[] args) {
-		//user inputs message as string
-		System.out.println("Enter your message");
 		
-		Scanner input = new Scanner (System.in);
+		// user inputs message as string
+		System.out.print("Enter string to be encrypted: ");
 		
-		//put message into character array
-		char [] array1 = input.nextLine().toCharArray();
+		Scanner input = new Scanner(System.in);
+		
+		// user input to char array
+		char [] array1 = input.nextLine().toLowerCase().toCharArray();
 
 		int n = (int) Math.ceil(array1.length / 2.0);
 		
 		int[][] matrix = new int[2][n];
 
-		// store chars in 2X1 vectors
-		for (int i = 0; i < matrix[0].length; i++) {
-			int index = i * 2;
-			matrix[0][i] = array1[index];
-			
-			// if odd re-copy last letter
-			if ((index == array1.length - 1) && (array1.length % 2) == 1) {
-				matrix[1][i] = array1[index];
-			}
-			else {
-				matrix[1][i] = array1[index+1];
-			}
-		}
-		
+		int[][] temp = new int[2][1];
+
 		int[][] a = new int[2][2];
 		
 		a[0][0] = 1;
 		a[0][1] = 1;
 		a[1][0] = 0;
 		a[1][1] = 3;
-
-		int[][] temp = new int[2][1];
 		
-		printMatrix(matrix);
-		
-		for (int i = 0; i < matrix[0].length-1; i++) {
+		// store chars in 2X1 vectors and reduce to integer between 0-25
+		for (int i = 0; i < matrix[0].length; i++) {
 			int index = i * 2;
-			temp[0][0] = matrix[0][index];
-			temp[1][0] = matrix[1][index+1];
-			
-			temp = matrixMultiply(temp, a);
-			
-			matrix[0][index] = temp[0][0];
-			matrix[1][index+1] = temp[1][0];
-			
+
+			// if odd re-copy last letter
+			if ((index == array1.length - 1) && (array1.length % 2) == 1) {
+				temp[0][0] = array1[index];
+				temp[1][0] = array1[index];
+				
+				temp = matrixMultiply(temp, a);
+				
+				matrix[0][i] = (temp[0][0] % 26) + 'a';
+				matrix[1][i] = (temp[1][0] % 26) + 'a';
+			}
+			else {
+				temp[0][0] = array1[index];
+				temp[1][0] = array1[index+1];
+				
+				temp = matrixMultiply(temp, a);
+				
+				matrix[0][i] = (temp[0][0] % 26) + 'a';
+				matrix[1][i] = (temp[1][0] % 26) + 'a';
+			}
 		}
-		
-		System.out.println();
-		
+
 		printMatrix(matrix);
-		//printMatrix(matrix1);
-		
-		//multiply each vector individually with a matrix A and store in new 2X1 vector
-		
-		//use modulo 26 to reduce each vectors values to ints between 0 and 26
-		
-		//switch the new vector values to their char value
-		
-		//combine the new char groups into one string
-		
-		//print the new encrypted message
-		
-		//}
+
+		String encryptedString = "";
+
+		/* print out new encrypted message */
+		for (int i = 0; i < matrix[0].length; i++) {
+			encryptedString += (char) matrix[0][i];
+			encryptedString += (char) matrix[1][i];	
+		}
+
+		System.out.println("The encrypted string is: " + encryptedString);
+
 		input.close();
 	}
-	
-
 }
