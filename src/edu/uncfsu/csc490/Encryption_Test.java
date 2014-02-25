@@ -2,7 +2,7 @@ package edu.uncfsu.csc490;
 
 import java.util.Scanner;
 
-public class Encryption {
+public class Encryption_Test {
 
 	private static void printMatrix(int[][] matrix) {
 		for (int i = 0; i < matrix.length; i++) {
