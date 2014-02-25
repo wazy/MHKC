@@ -4,15 +4,15 @@ import java.util.Random;
 
 public class MHKC_Encryption {
 
-	private static int[] privateKey;
-	private static int[] publicKey;
-	private static int[] cipherHolder;
+	public static int[] privateKey = {1, 2, 4, 8, 16, 32, 64, 128};
+	public static int[] publicKey = {31, 62, 124, 248, 233, 203, 143, 23};
+	public static int[] cipherHolder;
 	
-	private static int sum = 0;
-	private static int I = 0;
-	private static int R = 0;
+	private static int sum = 255;
+	public static int I = 263; // modulo
+	public static int R = 31; // multiplier
 
-	private static String test = "Example";
+	private static String test = "hello";
 	
 	public static int gcd(int a, int b) {
 		if (b == 0) 
@@ -21,40 +21,24 @@ public class MHKC_Encryption {
 		return gcd(b, a%b);
 	}
 	
-	public static void main(String[] args) {
-
-		String[] temp = "1, 2, 4, 8, 16, 32, 64, 128".split(", ");
-		
-		privateKey = new int[temp.length];
-		publicKey = new int[privateKey.length];
-		cipherHolder = new int[test.length()];
-		
-		/* convert string values of private key to integers */
-		for (int i = 0; i < temp.length; i++) {
-			int t = Integer.parseInt(temp[i]);
-			privateKey[i] = t;
-			sum += t;
-		}
-		
+	public static void generatePublicKey() {
 		Random generator = new Random();
 		
 		/* I is a random integer greater than the sum of private key */
 		I = generator.nextInt(sum) + sum+1;
 
 		/* generate an R such that GCD(I,R) = 1 */
-		while (gcd(I, R = generator.nextInt(sum)+sum+1) != 1) { ; }
+		while (gcd(I, R = generator.nextInt(1000)+1) != 1) { ; }
 		
 		/* generate public key */
 		for (int i = 0; i < privateKey.length; i++) {
 			publicKey[i] = (privateKey[i] * R) % I;
 		}
+	}
+	
+	public static void encrypt(String input) {
 
-		/* initialize each letters cipher to zero */
-		for (int i = 0; i < cipherHolder.length; i++) {
-			cipherHolder[i] = 0;
-		}		
-
-		byte[] binaryString = test.getBytes();
+		byte[] binaryString = input.getBytes();
 
 		/* nasty way to multiply each bit by the public key index and sum */
 		for (int i = 0; i < binaryString.length; i++) {
@@ -70,7 +54,21 @@ public class MHKC_Encryption {
 				cipherHolder[i] += result;
 			}
 		}
-		
+	}
+	
+	public static void main(String[] args) {
+
+		//generatePublicKey();
+
+		cipherHolder = new int[test.length()];
+
+		/* initialize each letters cipher to zero */
+		for (int i = 0; i < cipherHolder.length; i++) {
+			cipherHolder[i] = 0;
+		}
+
+		encrypt(test);
+
 		/* print summary of the encryption process and result */
 		System.out.print("The ciphertext output for '" + test + "' is => ");
 		for (int i = 0; i < cipherHolder.length; i++) {
