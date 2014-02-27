@@ -13,19 +13,28 @@ public class LLL {
 
 	@SuppressWarnings({ "rawtypes" })
 	public static Vector[] reduce(Vector[] v) {
+
+		int m = v[0].size(); // rows
 		
-		int n = v.length;
 		Vector[] v1 = GramSchmidt.execute(v);
 		
 		a = GramSchmidt.getA();
 
+		System.out.println("Printing A:");
+		for (int i = 0; i < a.length; i++) {
+			for (int j = 0; j < a[0].length; j++) {
+				System.out.print(a[i][j] + " ");
+			}
+			System.out.println();
+		}
+		
 		System.out.println();
 		
 		done = false;
 		
 		while (!done)
 		{
-			for (int j = 1; j <= n-1; j++) {
+			for (int j = 1; j <=  m-1; j++) {
 				for (int i = j-1; i >= 0; i--) {
 					if (Math.abs(a[i][j]) > .5) {
 						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(a[i][j]+.5), v[i]));
@@ -76,7 +85,7 @@ public class LLL {
 		
 		int count = 0;
 
-		Vector[] v = new Vector[10];
+		Vector[] v = new Vector[5];
 		
 		/* 
 		 * IN:
@@ -90,7 +99,7 @@ public class LLL {
 		 * 0 0 1
 		 */
 		
-		BufferedReader in = new BufferedReader(new FileReader("in/example.txt"));
+		BufferedReader in = new BufferedReader(new FileReader("in/simple.txt"));
 		String line = null;
 		
 		while((line = in.readLine()) != null) {
@@ -104,6 +113,9 @@ public class LLL {
 		}
 		
 		in.close();
+		if (v[0] == null){
+			System.out.println("v is null");
+		}
 		
 		v = reduce(v);
 		

@@ -11,18 +11,27 @@ public class GramSchmidt {
 	@SuppressWarnings("rawtypes")
 	public static Vector[] execute(Vector[] v) {
 		int n = v[0].size();
+		int m = v.length;
 		
-		Vector[] v1 = new Vector[n];
-		
-		a = new double[n][n];
+		Vector[] v1 = new Vector[m];
+
+		a = new double[m][n];
 		
 		v1[0] = v[0];
 		
-		for (int j = 1; j <= n-1; j++) {
+		
+		for (int j = 1; j <= m-1; j++) {
 			v1[j] = v[j];
 			
 			for (int i = 0; i <= (j-1); i++) {
+
+				if (v1[i] == null || v[j] == null) {
+					System.out.println("out of bounds in gram-schmidt");
+					return v1;
+				}
+
 				a[i][j] = (VectorOp.dotProduct(v1[i], v[j])) / (Math.pow(VectorOp.magnitude(v1[i]), 2));
+
 
 				if (reducedBasis && Math.abs(a[i][j]) > .5) {
 					reducedBasis = false;
@@ -74,9 +83,9 @@ public class GramSchmidt {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] args) {
-		Vector a = new Vector(3);
-		Vector b = new Vector(3);
-		Vector c = new Vector(3);
+		Vector a = new Vector(4);
+		Vector b = new Vector(4);
+		Vector c = new Vector(4);
 		
 		/* output for the first part of this algorithm using this data is: 
 		 * [1, 1, 1]
@@ -84,9 +93,9 @@ public class GramSchmidt {
 		 * [1/2, 0, -1/2]
 		*/
 		
-		a.add(1); a.add(1); a.add(1);
-		b.add(1); b.add(0); b.add(1);
-		c.add(1); c.add(1); c.add(0);
+		a.add(1); a.add(1); a.add(1);a.add(1);
+		b.add(0); b.add(1); b.add(1);b.add(1);
+		c.add(1); c.add(1); c.add(0);c.add(0);
 		
 		Vector[] v = new Vector[3];
 		Vector[] v1 = new Vector[3];

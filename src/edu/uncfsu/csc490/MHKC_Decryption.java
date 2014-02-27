@@ -9,11 +9,13 @@ public class MHKC_Decryption {
 		BigInteger R = new BigInteger(String.valueOf(MHKC_Encryption.R));
 		
 		// the encrypted values of this array spell out "hello"
-		BigInteger[] C = {new BigInteger("419"), new BigInteger("412"), 
-							new BigInteger("622"), new BigInteger("622"), 
-							new BigInteger("788")};
+		BigInteger[] C = {new BigInteger("408"), new BigInteger("209"), 
+							new BigInteger("645"), new BigInteger("442"), 
+							new BigInteger("622"), new BigInteger("690"), new BigInteger("431"),
+							new BigInteger("660"), new BigInteger("690")};
+		//408 209 645 442 622 690 431 660 690
 		
-		String[] V = new String[5];
+		String[] V = new String[9];
 		
 		BigInteger reverseMod = R.modInverse(I);
 		
@@ -56,7 +58,7 @@ public class MHKC_Decryption {
 		for (int i = 0; i < answerArr.length; i++) {
 			res += answerArr[i];
 		}
-
+		System.out.println(res);
 		return res;
 	}
 }
