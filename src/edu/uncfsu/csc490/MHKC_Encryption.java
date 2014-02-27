@@ -12,7 +12,7 @@ public class MHKC_Encryption {
 	public static int I = 263; // modulo
 	public static int R = 31; // multiplier
 
-	private static String test = "hello";
+	private static String test = "Hello World";
 	
 	public static int gcd(int a, int b) {
 		if (b == 0) 
@@ -21,7 +21,7 @@ public class MHKC_Encryption {
 		return gcd(b, a%b);
 	}
 	
-	public static void generatePublicKey() {
+	public static void generateIRValues() {
 		Random generator = new Random();
 		
 		/* I is a random integer greater than the sum of private key */
@@ -29,6 +29,11 @@ public class MHKC_Encryption {
 
 		/* generate an R such that GCD(I,R) = 1 */
 		while (gcd(I, R = generator.nextInt(1000)+1) != 1) { ; }
+	}
+	
+	public static void generatePublicKey() {
+		
+		//generateIRValues()
 		
 		/* generate public key */
 		for (int i = 0; i < privateKey.length; i++) {
