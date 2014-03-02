@@ -10,17 +10,17 @@ public class GramSchmidt {
 	
 	@SuppressWarnings("rawtypes")
 	public static Vector[] execute(Vector[] v) {
-		int n = v[0].size();
-		int m = v.length;
+		int n = v.length;
+		int m = v[0].size();
 		
-		Vector[] v1 = new Vector[m];
+		Vector[] v1 = new Vector[n];
 
-		a = new double[m][n];
+		a = new double[n][m];
 		
 		v1[0] = v[0];
 		
 		
-		for (int j = 1; j <= m-1; j++) {
+		for (int j = 1; j <= n-1; j++) {
 			v1[j] = v[j];
 			
 			for (int i = 0; i <= (j-1); i++) {

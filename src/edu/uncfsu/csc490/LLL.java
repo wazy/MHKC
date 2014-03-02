@@ -71,8 +71,9 @@ public class LLL {
 
 	@SuppressWarnings({ "rawtypes" })
 	private static void printMatrix(Vector[] v) {
-		for (int j = 0; j < v.length; j++) {
-			for (int i = 0; i < v[j].size(); i++) {
+		for (int j = 0; j < v.length; j++) { // rows
+			//System.out.print("Vector: " + j + " ");
+			for (int i = 0; i < v[j].size(); i++) { // cols
 				System.out.print(v[j].get(i) + " ");
 			}
 			System.out.print("\n");
@@ -96,6 +97,7 @@ public class LLL {
 		 * 0 -1 0
 		 * 1 0 0
 		 * 0 0 1
+		 * 
 		 */
 		
 		BufferedReader in = new BufferedReader(new FileReader("in/simple.txt"));
@@ -112,13 +114,34 @@ public class LLL {
 		}
 		
 		in.close();
-		if (v[0] == null){
+		if (v[0] == null) {
 			System.out.println("v is null");
 		}
-		
+
+		v = columnVectors(v);
 		v = reduce(v);
 		
 		printMatrix(v);
 		
+	}
+	
+	/* transpose vector */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static Vector[] columnVectors(Vector[] v) {
+		int n = v.length;
+		int m = v[0].size();
+		
+		Vector[] r = new Vector[n];
+
+		for (int i = 0; i < r.length; i++) {
+			r[i] = new Vector(m);
+		}
+		
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				r[i].add(v[j].get(i));
+			}
+		}
+		return r;
 	}
 }
