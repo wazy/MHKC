@@ -8,13 +8,13 @@ import java.util.Vector;
 
 public class LLL {
 
-	public static boolean done;
-	public static double[][] a;
+	private static boolean done;
+	private static double[][] a;
 
 	@SuppressWarnings({ "rawtypes" })
 	public static Vector[] reduce(Vector[] v) {
 
-		int m = v[0].size(); // rows
+		int n = v.length; // rows
 		
 		Vector[] v1 = GramSchmidt.execute(v);
 		
@@ -34,8 +34,8 @@ public class LLL {
 		
 		while (!done)
 		{
-			for (int j = 1; j <=  m-1; j++) {
-				for (int i = j-1; i >= 0; i--) {
+			for (int j = 1; j <= n-1; j++) {
+				for (int i = j-2; i >= 0; i--) {
 					if (Math.abs(a[i][j]) > .5) {
 						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(a[i][j]+.5), v[i]));
 					}
@@ -44,12 +44,11 @@ public class LLL {
 			
 			boolean pass = false;
 			
-			for (int j = 0; j < v.length - 1; j++) {
+			for (int j = 0; j < n-1; j++) {
 				
 				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
 					
-				double ajj = a[j][j+1];
-				Vector x = VectorOp.scalarMult(ajj, v1[j]); 
+				Vector x = VectorOp.scalarMult(a[j][j+1], v1[j]); 
 				x = VectorOp.add(v1[j+1], x);
 				double lhs = Math.pow(VectorOp.magnitude(x), 2);
 				
