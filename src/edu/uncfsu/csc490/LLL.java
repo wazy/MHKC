@@ -34,18 +34,16 @@ public class LLL {
 		
 		while (!done)
 		{
-			for (int j = 2; j <= n; j++) {
-				for (int i = j-1; i >= 1; i--) {
+			for (int j = 1; j <= n-1; j++) {
+				for (int i = j-1; i >= 0; i--) {
 					if (Math.abs(a[i][j]) > .5) {
 						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(a[i][j]+.5), v[i]));
 					}
 				}
 			}
 			
-			boolean pass = false;
-			
-			for (int j = 0; j < n-1; j++) {
-				
+			int j = 0;
+			while (j < n-1) {
 				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
 					
 				Vector x = VectorOp.scalarMult(a[j][j+1], v1[j]); 
@@ -57,27 +55,20 @@ public class LLL {
 					temp = v[j];
 					v[j] = v[j+1];
 					v[j+1] = temp;
-					pass = true;
+					break;
 				}
+				j++;
 			}
-			if (!pass) {
+
+			if (j == n-1) {
 				done = true;
 			}
-			v1 = GramSchmidt.execute(v);
-			a = GramSchmidt.getA();
+			else {
+				v1 = GramSchmidt.execute(v);
+				a = GramSchmidt.getA();
+			}
 		}
 		return v;
-	}
-
-	@SuppressWarnings({ "rawtypes" })
-	private static void printMatrix(Vector[] v) {
-		for (int j = 0; j < v.length; j++) { // rows
-			//System.out.print("Vector: " + j + " ");
-			for (int i = 0; i < v[j].size(); i++) { // cols
-				System.out.print(v[j].get(i) + " ");
-			}
-			System.out.print("\n");
-		}
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -86,20 +77,7 @@ public class LLL {
 		int count = 0;
 
 		Vector[] v = new Vector[5];
-		
-		/* 
-		 * IN:
-		 * 1 1 1
-		 * 1 0 1
-		 * 1 1 0
-		 * 
-		 * EXPECTED OUT:
-		 * 0 -1 0
-		 * 1 0 0
-		 * 0 0 1
-		 * 
-		 */
-		
+
 		BufferedReader in = new BufferedReader(new FileReader("in/simple.txt"));
 		String line = null;
 		
@@ -118,30 +96,10 @@ public class LLL {
 			System.out.println("v is null");
 		}
 
-		v = columnVectors(v);
+		v = VectorArrayOp.columnVectors(v);
+
 		v = reduce(v);
 		
-		printMatrix(v);
-		
-	}
-	
-	/* transpose vector */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Vector[] columnVectors(Vector[] v) {
-		int n = v.length;
-		int m = v[0].size();
-		
-		Vector[] r = new Vector[n];
-
-		for (int i = 0; i < r.length; i++) {
-			r[i] = new Vector(m);
-		}
-		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				r[i].add(v[j].get(i));
-			}
-		}
-		return r;
-	}
+		VectorArrayOp.printVectors(v);
+	}	
 }
