@@ -34,8 +34,8 @@ public class LLL {
 		
 		while (!done)
 		{
-			for (int j = 1; j <= n-1; j++) {
-				for (int i = j-2; i >= 0; i--) {
+			for (int j = 2; j <= n; j++) {
+				for (int i = j-1; i >= 1; i--) {
 					if (Math.abs(a[i][j]) > .5) {
 						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(a[i][j]+.5), v[i]));
 					}
