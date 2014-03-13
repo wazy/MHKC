@@ -8,6 +8,10 @@ public class MHKC_Decryption {
 		BigInteger I = new BigInteger(String.valueOf(MHKC_Encryption.I));
 		BigInteger R = new BigInteger(String.valueOf(MHKC_Encryption.R));
 
+		BigInteger[] Prk = {new BigInteger("1"), new BigInteger("2"), 
+				new BigInteger("4"), new BigInteger("8"), new BigInteger("16"), 
+				new BigInteger("32"), new BigInteger("64"), new BigInteger("128")};
+		
 		// encrypted values to be solved for
 		BigInteger[] C = {  new BigInteger("295"), new BigInteger("412"), 
 							new BigInteger("622"), new BigInteger("622"), 
@@ -23,7 +27,8 @@ public class MHKC_Decryption {
 		String result = "";
 		
 		for (int j = 0; j < V.length; j++) {
-			V[j] = solveValue(C[j].multiply(reverseMod).mod(I));
+			BigInteger z = C[j].multiply(reverseMod).mod(I);
+			V[j] = superIncreasingSolver(Prk, z);
 			//System.out.println(C[j].toString() + " x " + reverseMod.toString() + 
 			//					" mod " + I.toString() + " = " + V[j].toString());
 			int charCode = Integer.parseInt(V[j], 2);
@@ -44,31 +49,31 @@ public class MHKC_Decryption {
 	}
 
 	/* this finds the values of the private key that fit into the encoded letter */
-	private static String solveValue(BigInteger b1) {
-
-		BigInteger[] Prk = {new BigInteger("1"), new BigInteger("2"), 
-				new BigInteger("4"), new BigInteger("8"), new BigInteger("16"), 
-				new BigInteger("32"), new BigInteger("64"), new BigInteger("128")};
-
-		int[] answerArr = new int[8];
-		for (int i = 0; i < answerArr.length; i++) {
-			answerArr[i] = 0;
-		}
-
-		int value = b1.intValue();
-
-		/* NOTE ASSUMPTION IS MADE THAT PRK IS INCREASING */
+	private static String superIncreasingSolver(BigInteger[] a, BigInteger b1) {
+		
+		int n = a.length-1;
+		int z = b1.intValue();
+		byte[] answerArr = new byte[a.length];
+		
 		/* find PRK values that fit in descending order */
-		for (int j = Prk.length-1; j >= 0; j--) {
-			if (Prk[j].intValue() > value)
-				continue;
-
-			value -= Prk[j].intValue();
-			answerArr[j] = 1;
+		for (int i = n; i >= 0; i--) {
+			if (z >= a[i].intValue()) {
+				z -= a[i].intValue();
+				answerArr[i] = 1;
+			}
+			else {
+				answerArr[i] = 0;
+			}
+		}
+		
+		// no solution -- error
+		if (z != 0) {
+			System.out.println("NO SOLUTION");
+			System.exit(1);
 		}
 
 		String res = "";
-
+		// put binary array to string
 		for (int i = 0; i < answerArr.length; i++) {
 			res += answerArr[i];
 		}
