@@ -43,9 +43,9 @@ public class VectorArrayOp {
 	
 	@SuppressWarnings({ "rawtypes" })
 	public static void printVectors(Vector[] v) {
-		for (int j = 0; j < v.length; j++) { // rows
+		for (int i = 0; i < v.length; i++) { // rows
 			//System.out.print("Vector: " + j + " ");
-			for (int i = 0; i < v[j].size(); i++) { // cols
+			for (int j = 0; j < v[i].size(); j++) { // cols
 				System.out.print(v[j].get(i) + " ");
 			}
 			System.out.print("\n");

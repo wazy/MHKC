@@ -14,9 +14,13 @@ public class LLL {
 	@SuppressWarnings({ "rawtypes" })
 	public static Vector[] reduce(Vector[] v) {
 
-		int n = v.length; // rows
+		int n = v[0].size(); // cols
 		
 		Vector[] v1 = GramSchmidt.execute(v);
+		
+		VectorArrayOp.printVectors(v1);
+		
+		System.out.println();
 		
 		a = GramSchmidt.getA();
 
@@ -32,42 +36,44 @@ public class LLL {
 		
 		done = false;
 		
+		VectorArrayOp.printVectors(v);
+		System.out.println();
+		
 		while (!done)
-		{
+		{			
 			for (int j = 1; j <= n-1; j++) {
-				for (int i = j-1; i >= 0; i--) {
+				for (int i = j-1; i >= 0; i--) {				
 					if (Math.abs(a[i][j]) > .5) {
 						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(a[i][j]+.5), v[i]));
 					}
 				}
 			}
 			
-			int j = 0;
-			while (j < n-1) {
+			VectorArrayOp.printVectors(v);
+			System.out.println();
+			done = true;
+			for (int j = 0; j < n-1; j++) {
 				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
-					
+				
 				Vector x = VectorOp.scalarMult(a[j][j+1], v1[j]); 
 				x = VectorOp.add(v1[j+1], x);
 				double lhs = Math.pow(VectorOp.magnitude(x), 2);
-				
+								
 				if (lhs < rhs) {
-					Vector temp = new Vector();
+					Vector temp = new Vector(n);
 					temp = v[j];
 					v[j] = v[j+1];
 					v[j+1] = temp;
-					break;
-				}
-				j++;
+					done = false;
+				}				
 			}
+			VectorArrayOp.printVectors(v);
+			System.out.println();
 
-			if (j == n-1) {
-				done = true;
-			}
-			else {
-				v1 = GramSchmidt.execute(v);
-				a = GramSchmidt.getA();
-			}
+			v1 = GramSchmidt.execute(v);
+			a = GramSchmidt.getA();
 		}
+
 		return v;
 	}
 	
@@ -76,9 +82,9 @@ public class LLL {
 		
 		int count = 0;
 
-		Vector[] v = new Vector[5];
+		Vector[] v = new Vector[3];
 
-		BufferedReader in = new BufferedReader(new FileReader("in/simple.txt"));
+		BufferedReader in = new BufferedReader(new FileReader("in/k"));
 		String line = null;
 		
 		while((line = in.readLine()) != null) {
@@ -95,7 +101,7 @@ public class LLL {
 		if (v[0] == null) {
 			System.out.println("v is null");
 		}
-
+		
 		v = VectorArrayOp.columnVectors(v);
 
 		v = reduce(v);
