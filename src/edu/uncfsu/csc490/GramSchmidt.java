@@ -6,7 +6,7 @@ public class GramSchmidt {
 
 	private static double a[][];
 	
-	private static boolean reducedBasis = true;
+	public static boolean reducedBasis = true;
 	
 	@SuppressWarnings("rawtypes")
 	public static Vector[] execute(Vector[] v) {

@@ -49,6 +49,10 @@ public class LLL {
 				}
 			}
 			
+
+			v1 = GramSchmidt.execute(v);
+			a = GramSchmidt.getA();
+			
 			VectorArrayOp.printVectors(v);
 			System.out.println();
 			done = true;
@@ -65,13 +69,16 @@ public class LLL {
 					v[j] = v[j+1];
 					v[j+1] = temp;
 					done = false;
+					break;
 				}				
 			}
 			VectorArrayOp.printVectors(v);
 			System.out.println();
-
-			v1 = GramSchmidt.execute(v);
-			a = GramSchmidt.getA();
+			
+			if (!done) {
+				v1 = GramSchmidt.execute(v);
+				a = GramSchmidt.getA();
+			}
 		}
 
 		return v;
@@ -104,8 +111,18 @@ public class LLL {
 		
 		v = VectorArrayOp.columnVectors(v);
 
+		// Vector[] v1 = new Vector[3];
 		v = reduce(v);
 		
 		VectorArrayOp.printVectors(v);
+		
+		/*
+		
+		GramSchmidt.isReducedBasis(v, v1);
+		
+		if (GramSchmidt.reducedBasis)
+			System.out.println("reduced");
+			
+		*/
 	}	
 }
