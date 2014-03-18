@@ -14,7 +14,7 @@ public class LLL {
 	@SuppressWarnings({ "rawtypes" })
 	public static Vector[] reduce(Vector[] v) {
 
-		int n = v[0].size(); // cols
+		int n = v.length; // rows
 		
 		Vector[] v1 = GramSchmidt.execute(v);
 		
@@ -116,13 +116,10 @@ public class LLL {
 		
 		VectorArrayOp.printVectors(v);
 		
-		/*
-		
-		GramSchmidt.isReducedBasis(v, v1);
+		GramSchmidt.isReducedBasis(v);
 		
 		if (GramSchmidt.reducedBasis)
-			System.out.println("reduced");
-			
-		*/
+			System.out.println("\nM' is reduced.");
+
 	}	
 }

@@ -45,36 +45,26 @@ public class GramSchmidt {
 	}
 	
 	@SuppressWarnings({ "rawtypes" })
-	public static void isReducedBasis(Vector[] v, Vector[] v1) {
-		if (reducedBasis) {
-			System.out.println("M is a reduced basis for step a.");
+	public static void isReducedBasis(Vector[] v1) {
+		v1 = execute(v1);
+
+		int n = v1.length;
+
+		for (int j = 0; j < n-1; j++) {
+			double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
 			
-			int n = v1[0].size();
+			Vector x = VectorOp.scalarMult(a[j][j], v1[j]); 
+			x = VectorOp.add(v1[j+1], x);
+			double lhs = Math.pow(VectorOp.magnitude(x), 2);
 			
-			a = new double[n][n];
-			
-			for (int j = 0; j < n-2; j++) {
-				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
-				
-				a[j][j] = (VectorOp.dotProduct(v1[j], v[j+1])) / (Math.pow(VectorOp.magnitude(v1[j]), 2));
-				Vector x = VectorOp.scalarMult(a[j][j], v1[j]); 
-				x = VectorOp.add(v1[j+1], x);
-				double lhs = Math.pow(VectorOp.magnitude(x), 2);
-				
-				if (lhs >= rhs) {
-					reducedBasis = true;
-				}
-				else {
-					reducedBasis = false;
-				}
-				
+			if (lhs >= rhs) {
+				reducedBasis = true;
 			}
-		}
-		else {
-			System.out.println("\nM is not a reduced basis.");
-			return;
-		}
-		
+			else {
+				reducedBasis = false;
+				return;
+			}	
+		}		
 	}
 	
 	public static boolean getIsReduced() {
@@ -115,7 +105,7 @@ public class GramSchmidt {
 		
 		// v = M
 		// v1 = M*
-		isReducedBasis(v, v1);
+		isReducedBasis(v1);
 
 		
 		if (reducedBasis) {
