@@ -88,47 +88,54 @@ public class Utils {
 	}
 	
 	/* transpose vector -- algorithm uses column vectors not row vectors */
-	public static Vector[] transpose(Vector[] v) {
-		int n = v.length;
-		int m = v[0].size();
+	public static Vector[] transpose(Vector[] b) {
+		int n = b.length;
+		int m = b[0].size();
 		
-		Vector[] r = new Vector[n];
+		Vector[] r = new Vector[m];
 
 		for (int i = 0; i < r.length; i++) {
-			r[i] = new Vector(m);
+			r[i] = new Vector(n);
 		}
+
+		// a b c
+		// d e f
+
+		// a d
+		// b e
+		// c f
 		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				r[i].add(v[j].get(i));
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				r[i].add(b[j].get(i));
 			}
 		}
 		return r;
 	}
 
 	// calculates weight of the vector array 
-	public static double weight(Vector[] v) {
+	public static double weight(Vector[] b) {
 		double weight = 1.0;
-		for (int i = 0; i < v.length; i++) {
-				weight *= magnitude(v[i]);
+		for (int i = 0; i < b.length; i++) {
+				weight *= magnitude(b[i]);
 		}
 		return weight;
 	}
 
 	// calculates volume of the vector array
-	public static double volume(Vector[] v) {
+	public static double volume(Vector[] b) {
 		double weight = 1.0;
-		for (int i = 0; i < v.length; i++) {
-				weight *= magnitude(v[i]);
+		for (int i = 0; i < b.length; i++) {
+				weight *= magnitude(b[i]);
 		}
 		return weight;
 	}
 	
 	// this method is for printing vector array
-	public static void print(Vector[] v) {
-		for (int i = 0; i < v.length; i++) { // rows
-			for (int j = 0; j < v[i].size(); j++) { // cols
-				System.out.print(v[j].get(i) + " ");
+	public static void print(Vector[] b) {
+		for (int i = 0; i < b[0].size(); i++) { // rows
+			for (int j = 0; j < b.length; j++) { // cols
+				System.out.print(b[j].get(i) + " ");
 			}
 			System.out.print("\n");
 		}
@@ -136,9 +143,9 @@ public class Utils {
 	}
 
 	// this method is for printing vector array with a label
-	public static void print(String tag, Vector[] v) {
+	public static void print(String tag, Vector[] b) {
 		System.out.println(tag);
-		print(v);
+		print(b);
 	}
 
 

@@ -13,7 +13,8 @@ public class IntegerEquationsSolver extends LLL {
 	public static void main(String[] args) throws IOException {
 
 		String line = null;
-		String filename = "in/3by3.txt";
+		//String filename = "in/3by3.txt";
+		String filename = "in/example84.txt";
 
 		int count = 0;
 		int lines = 0;
@@ -50,6 +51,7 @@ public class IntegerEquationsSolver extends LLL {
 		// transpose M and calculate M'
 		Vector[] M1 = M.clone();
 		M = transpose(M);
+		print(M);
 		M1 = reduce(M.clone());
 
 		// showcase the results
@@ -58,6 +60,9 @@ public class IntegerEquationsSolver extends LLL {
 		print("M' is:", M1);
 		System.out.println("**************************************************\n");
 
+		System.out.println("Weight of M is: " + weight(M));
+		System.out.println("Weight of M' is: " + weight(M1));
+		
 		// redundant --> LLL should not terminate unless it is reduced
 		if (reducedBasis)
 			System.out.println("M' is reduced.");
