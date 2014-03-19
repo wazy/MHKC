@@ -2,7 +2,7 @@ package edu.uncfsu.csc490;
 
 import java.util.Vector;
 
-public class WeightReduction {
+public class WeightReduction extends Utils {
 	
 	private static double[][] delta;
 	private static double[] epilson = {-1.0, 1.0};
@@ -18,7 +18,7 @@ public class WeightReduction {
 		// delta i,j = b[i] * b[j]
 		for (int i = 0; i < n; i++){
 			for (int j = 0; j < m; j++) {
-				delta[i][j] = (VectorOp.dotProduct(v[i], v[j]));
+				delta[i][j] = (dotProduct(v[i], v[j]));
 			}
 		}
 
@@ -37,8 +37,8 @@ public class WeightReduction {
 						k = i;
 					}
 					
-					Vector temp = VectorOp.add(v[i], VectorOp.scalarMult(epsil, v[j]));
-					if (Math.pow(VectorOp.magnitude(temp), 2) < delta[k][k]) {
+					Vector temp = add(v[i], scalarMult(epsil, v[j]));
+					if (Math.pow(magnitude(temp), 2) < delta[k][k]) {
 						//delta k,k <- delta i,i + delta j,j + 2t delta i,j
 						delta[k][k] = delta[i][i] + delta[j][j] + (2 * epsil * delta[i][j]);
 						

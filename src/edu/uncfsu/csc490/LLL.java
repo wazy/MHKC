@@ -1,125 +1,83 @@
 package edu.uncfsu.csc490;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Collections;
 import java.util.Vector;
 
-public class LLL {
+@SuppressWarnings("rawtypes")
+public class LLL extends Utils {
 
-	private static boolean done;
+	private static int n; // rows
 	private static double[][] a;
 
-	@SuppressWarnings({ "rawtypes" })
-	public static Vector[] reduce(Vector[] v) {
+	private static boolean done;
+	public static boolean reducedBasis;
+	
+	public static Vector[] reduce(Vector[] b) {
 
-		int n = v.length; // rows
-		
-		Vector[] v1 = GramSchmidt.execute(v);
-		
-		VectorArrayOp.printVectors(v1);
-		
-		System.out.println();
-		
+		n = b.length;
+
+		int count = 0;
+
+		// run first iteration of Gram-Schmidt orthonormalization
+		// and generate coefficients a[i][j] for (i < j)
+		Vector[] b1 = GramSchmidt.process(b);
 		a = GramSchmidt.getA();
 
-		System.out.println("Printing A:");
-		for (int i = 0; i < a.length; i++) {
-			for (int j = 0; j < a[0].length; j++) {
-				System.out.print(a[i][j] + " ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println();
-		
+		print("Initial Vectors:", b);
+		print("Initial Gramm-Schmidt:", b1);
+		print("Printing initial A:", a);
+
 		done = false;
-		
-		VectorArrayOp.printVectors(v);
-		System.out.println();
-		
+		reducedBasis = false;
+
 		while (!done)
-		{			
+		{
+			// attempt to reduce the vectors
 			for (int j = 1; j <= n-1; j++) {
 				for (int i = j-1; i >= 0; i--) {				
 					if (Math.abs(a[i][j]) > .5) {
-						v[j] = VectorOp.subtract(v[j], VectorOp.scalarMult(Math.floor(a[i][j]+.5), v[i]));
+						b[j] = subtract(b[j], scalarMult(Math.floor(a[i][j]+.5), b[i]));
 					}
 				}
 			}
 			
-
-			v1 = GramSchmidt.execute(v);
+			count++;
+			
+			// recalculate Gram-Schmidt after reduction
+			b1 = GramSchmidt.process(b);
 			a = GramSchmidt.getA();
 			
-			VectorArrayOp.printVectors(v);
-			System.out.println();
-			done = true;
-			for (int j = 0; j < n-1; j++) {
-				double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
-				
-				Vector x = VectorOp.scalarMult(a[j][j+1], v1[j]); 
-				x = VectorOp.add(v1[j+1], x);
-				double lhs = Math.pow(VectorOp.magnitude(x), 2);
-								
-				if (lhs < rhs) {
-					Vector temp = new Vector(n);
-					temp = v[j];
-					v[j] = v[j+1];
-					v[j+1] = temp;
-					done = false;
-					break;
-				}				
-			}
-			VectorArrayOp.printVectors(v);
-			System.out.println();
+			print("Vectors after reduction, iteration " + count + ":", b);
+			print("Gramm-Schmidt after reduction, iteration " + count + ":", b1);
+			print("A after reduction, iteration " + count + ":", a);
 			
-			if (!done) {
-				v1 = GramSchmidt.execute(v);
+			// check whether we have a reduced basis or not
+			// if it is reduced then we terminate the algorithm
+			// else rerun Gram-Schmidt orthonormalization
+			if (isReducedBasis(b, b1, a))
+				done = true;
+			else {
+				b1 = GramSchmidt.process(b);
 				a = GramSchmidt.getA();
 			}
 		}
-
-		return v;
+		return b;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void main(String[] args) throws IOException {
-		
-		int count = 0;
+	public static boolean isReducedBasis(Vector[] b, Vector[] b1, double[][] a) {
 
-		Vector[] v = new Vector[3];
-
-		BufferedReader in = new BufferedReader(new FileReader("in/k"));
-		String line = null;
-		
-		while((line = in.readLine()) != null) {
-			String[] strArr = line.split(" ");
+		// checks whether we are reduced for all vectors
+		for (int j = 0; j < n-1; j++) {
+			double lhs = calculateLHS(a[j][j+1], b1[j], b1[j+1]); 
+			double rhs = calculateRHS(b1[j]);
 			
-			v[count] = new Vector(strArr.length);
+			//System.out.println(lhs + " < " + rhs);
 			
-			Collections.addAll(v[count], strArr);
-			
-			count++;
+			if (lhs < rhs) {
+				swap(b, j);
+				return false;
+			}
 		}
-		
-		in.close();
-		if (v[0] == null) {
-			System.out.println("v is null");
-		}
-		
-		v = VectorArrayOp.columnVectors(v);
-
-		// Vector[] v1 = new Vector[3];
-		v = reduce(v);
-		
-		VectorArrayOp.printVectors(v);
-		
-		GramSchmidt.isReducedBasis(v);
-		
-		if (GramSchmidt.reducedBasis)
-			System.out.println("\nM' is reduced.");
-
-	}	
+		reducedBasis = true;
+		return true;
+	}
 }

@@ -2,14 +2,12 @@ package edu.uncfsu.csc490;
 
 import java.util.Vector;
 
-public class GramSchmidt {
+public class GramSchmidt extends Utils {
 
 	private static double a[][];
-	
-	public static boolean reducedBasis = true;
-	
+
 	@SuppressWarnings("rawtypes")
-	public static Vector[] execute(Vector[] v) {
+	public static Vector[] process(Vector[] v) {
 		int n = v.length;
 		int m = v[0].size();
 		
@@ -19,99 +17,23 @@ public class GramSchmidt {
 		
 		v1[0] = v[0];
 		
-		
 		for (int j = 1; j <= n-1; j++) {
 			v1[j] = v[j];
 			
 			for (int i = 0; i <= (j-1); i++) {
 
 				if (v1[i] == null || v[j] == null) {
-					System.out.println("out of bounds in gram-schmidt");
-					return v1;
+					System.out.println("Fatal: out of bounds in Gramm-Schmidt");
+					System.exit(1);
 				}
 
-				a[i][j] = (VectorOp.dotProduct(v1[i], v[j])) / (Math.pow(VectorOp.magnitude(v1[i]), 2));
-
-
-				if (reducedBasis && Math.abs(a[i][j]) > .5) {
-					reducedBasis = false;
-				}
+				a[i][j] = (dotProduct(v1[i], v[j])) / (Math.pow(magnitude(v1[i]), 2));
 				
-				v1[j] = VectorOp.subtract(v1[j], (VectorOp.scalarMult(a[i][j], v1[i])));
+				v1[j] = subtract(v1[j], (scalarMult(a[i][j], v1[i])));
 			}
 		}
 
 		return v1;
-	}
-	
-	@SuppressWarnings({ "rawtypes" })
-	public static void isReducedBasis(Vector[] v1) {
-		v1 = execute(v1);
-
-		int n = v1.length;
-
-		for (int j = 0; j < n-1; j++) {
-			double rhs = .75 * Math.pow(VectorOp.magnitude(v1[j]), 2);
-			
-			Vector x = VectorOp.scalarMult(a[j][j], v1[j]); 
-			x = VectorOp.add(v1[j+1], x);
-			double lhs = Math.pow(VectorOp.magnitude(x), 2);
-			
-			if (lhs >= rhs) {
-				reducedBasis = true;
-			}
-			else {
-				reducedBasis = false;
-				return;
-			}	
-		}		
-	}
-	
-	public static boolean getIsReduced() {
-		return reducedBasis;
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void main(String[] args) {
-		Vector a = new Vector(4);
-		Vector b = new Vector(4);
-		Vector c = new Vector(4);
-		
-		/* output for the first part of this algorithm using this data is: 
-		 * [1, 1, 1]
-		 * [1/3, -2/3, 1/3]
-		 * [1/2, 0, -1/2]
-		*/
-		
-		a.add(1); a.add(1); a.add(1);a.add(1);
-		b.add(0); b.add(1); b.add(1);b.add(1);
-		c.add(1); c.add(1); c.add(0);c.add(0);
-		
-		Vector[] v = new Vector[3];
-		Vector[] v1 = new Vector[3];
-		
-		v[0] = a;
-		v[1] = b;
-		v[2] = c;
-		
-		v1 = execute(v);
-				
-		for (int j = 0; j < v1.length; j++) {
-			for (int i = 0; i < v1[j].size(); i++) {
-				System.out.print(v1[j].get(i) + " ");
-			}
-			System.out.print("\n");
-		}
-		
-		// v = M
-		// v1 = M*
-		isReducedBasis(v1);
-
-		
-		if (reducedBasis) {
-			System.out.println("\nM is a reduced basis.");
-		}
-		
 	}
 
 	public static double[][] getA() {
