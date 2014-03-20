@@ -1,10 +1,15 @@
 package edu.uncfsu.csc490;
 
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Utils {
-
+	
+	// format to two decimal places and put a space in front
+	// if not negative to align columns
+	private static DecimalFormat df = new DecimalFormat(" 0.00;-0");
+	
 	/***                         ***/
 	/*** BEGIN Vector Operations ***/
 	/***                         ***/
@@ -135,7 +140,7 @@ public class Utils {
 	public static void print(Vector[] b) {
 		for (int i = 0; i < b[0].size(); i++) { // rows
 			for (int j = 0; j < b.length; j++) { // cols
-				System.out.print(b[j].get(i) + " ");
+				System.out.print(df.format(Double.parseDouble(b[j].get(i).toString())) + " ");
 			}
 			System.out.print("\n");
 		}
@@ -163,7 +168,7 @@ public class Utils {
 	public static void print(double[][] a) {
 		for (int i = 0; i < a.length; i++) {
 			for (int j = 0; j < a[0].length; j++) {
-				System.out.print(a[i][j] + " ");
+				System.out.print(df.format(a[i][j]) + " ");
 			}
 			System.out.println();
 		}

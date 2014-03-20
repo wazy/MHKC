@@ -23,12 +23,12 @@ public class GramSchmidt extends Utils {
 			for (int i = 0; i <= (j-1); i++) {
 
 				if (v1[i] == null || v[j] == null) {
-					System.out.println("Fatal: out of bounds in Gramm-Schmidt");
+					System.out.println("Fatal: out of bounds in Gram-Schmidt");
 					System.exit(1);
 				}
 
 				a[i][j] = (dotProduct(v1[i], v[j])) / (Math.pow(magnitude(v1[i]), 2));
-				
+
 				v1[j] = subtract(v1[j], (scalarMult(a[i][j], v1[i])));
 			}
 		}

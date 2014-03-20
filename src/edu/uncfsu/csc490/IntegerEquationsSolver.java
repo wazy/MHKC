@@ -51,7 +51,6 @@ public class IntegerEquationsSolver extends LLL {
 		// transpose M and calculate M'
 		Vector[] M1 = M.clone();
 		M = transpose(M);
-		print(M);
 		M1 = reduce(M.clone());
 
 		// showcase the results
