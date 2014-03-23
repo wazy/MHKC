@@ -63,4 +63,8 @@ public class WeightReduction extends Utils {
 		}
 		return v;
 	}
+	
+	public static double[][] getDelta() {
+		return delta;
+	}
 }

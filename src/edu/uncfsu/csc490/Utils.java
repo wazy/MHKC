@@ -126,6 +126,15 @@ public class Utils {
 		}
 		return weight;
 	}
+	
+	// calculates weight from the delta matrix in KR
+	public static double weight(int n, double[][] delta) {
+		double weight = 1.0;
+		for (int i = 0; i < n; i++) {
+				weight *= Math.sqrt(delta[i][i]);
+		}
+		return weight;
+	}
 
 	// calculates volume of the vector array
 	public static double volume(Vector[] b) {

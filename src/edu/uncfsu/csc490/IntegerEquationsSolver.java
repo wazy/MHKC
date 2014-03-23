@@ -50,6 +50,12 @@ public class IntegerEquationsSolver extends LLL {
 
 		// transpose M and calculate M'
 		Vector[] M1 = M.clone();
+		
+		int n = M1.length;
+		int m = M1[0].size();
+		
+		System.out.println((n+m) + " by " + (m+1));
+		System.exit(1);
 		M = transpose(M);
 		M1 = reduce(M.clone());
 
