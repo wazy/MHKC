@@ -11,13 +11,13 @@ public class WeightReduction extends Utils {
 	public static Vector[] wtReduct(Vector[] v){
 		int n = v.length;
 		int m = v[0].size();
-		
+
 		delta = new double [n][m];
-		
+
 		//global delta ij, 1<=i,j<=n
 		// delta i,j = b[i] * b[j]
 		for (int i = 0; i < n; i++){
-			for (int j = 0; j < m; j++) {
+			for (int j = 0; j < n; j++) {
 				delta[i][j] = (dotProduct(v[i], v[j]));
 			}
 		}
@@ -36,12 +36,12 @@ public class WeightReduction extends Utils {
 					else {
 						k = i;
 					}
-					
+
 					Vector temp = add(v[i], scalarMult(epsil, v[j]));
 					if (Math.pow(magnitude(temp), 2) < delta[k][k]) {
 						//delta k,k <- delta i,i + delta j,j + 2t delta i,j
 						delta[k][k] = delta[i][i] + delta[j][j] + (2 * epsil * delta[i][j]);
-						
+
 						for (int h = 0; h < n-1; h++) {
 							if (h != i && h != j) {
 								delta[k][h] = delta[i][h] + epsil*delta[j][h];
@@ -63,7 +63,7 @@ public class WeightReduction extends Utils {
 		}
 		return v;
 	}
-	
+
 	public static double[][] getDelta() {
 		return delta;
 	}

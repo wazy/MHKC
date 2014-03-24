@@ -12,7 +12,7 @@ public class MHKC_Encryption {
 	public static int I = 263; // modulo
 	public static int R = 31; // multiplier
 
-	private static String test = "Hello World";
+	private static String test = "H";
 	
 	public static int gcd(int a, int b) {
 		if (b == 0) 

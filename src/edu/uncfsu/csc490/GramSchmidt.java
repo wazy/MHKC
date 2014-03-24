@@ -10,13 +10,13 @@ public class GramSchmidt extends Utils {
 	public static Vector[] process(Vector[] v) {
 		int n = v.length;
 		int m = v[0].size();
-		
+
 		Vector[] v1 = new Vector[n];
 
-		a = new double[n][m];
-		
+		a = new double[m][n];
+
 		v1[0] = v[0];
-		
+
 		for (int j = 1; j <= n-1; j++) {
 			v1[j] = v[j];
 			

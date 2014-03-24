@@ -1,7 +1,7 @@
 package edu.uncfsu.csc490;
 
+import java.util.Arrays;
 import java.util.Vector;
-import edu.uncfsu.csc490.Utils;
 
 @SuppressWarnings("rawtypes")
 public class KR extends Utils {
@@ -42,13 +42,28 @@ public class KR extends Utils {
 	
 	// sort basis vectors by magnitude (swap sort)
 	public static Vector[] sortVectors(Vector[] M) {
-		for (int i = 0; i < M.length-2; i++) {
-			if (magnitude(M[i]) > magnitude(M[i+1])) {
-				Vector temp = (Vector) M[i].clone();
-				M[i] = (Vector) M[i+1].clone();
-				M[i+1] = temp;
+
+		double[] temp = new double[M.length]; 
+		double[] lookup = new double[M.length];
+
+		Vector[] M1 = new Vector[M.length];
+		
+		for (int i = 0; i < M.length; i++) {
+			temp[i] = magnitude(M[i]);
+			lookup[i] = magnitude(M[i]);
+		}
+		
+		Arrays.sort(temp);
+		
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < lookup.length; j++) {
+				if (lookup[j] == temp[i]) {
+					M1[i] = (Vector) M[j].clone();
+					break;
+				}
 			}
 		}
-		return M;
+
+		return M1;
 	}
 }

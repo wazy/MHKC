@@ -5,7 +5,7 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class LLL extends Utils {
 
-	private static int n; // rows
+	private static int n; // vectors
 	private static double[][] a;
 
 	private static boolean done;

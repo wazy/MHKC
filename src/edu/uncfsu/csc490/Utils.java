@@ -42,14 +42,43 @@ public class Utils {
     public static double magnitude(Vector a) {
         return Math.sqrt(dotProduct(a, a));
     }
-	
+
+    // negate the vector by subtracting from zero
+    public static Vector negate(Vector B) {
+    	for (int i = 0; i < B.size(); i++) {
+			B.set(i, (0 - Integer.parseInt(B.get(i).toString())));
+		}
+    	return B;
+    }
+
+    // print U if a solution is found after reduction
+	public static void printSolution(int m, Vector solution) {
+		
+		/* Note: most of this code is for formatting
+		   e.g. U = [1, 0, 0, 0, 1, 0, 0, 1, 0, 0] */
+		
+		String prefix = "U = [";
+		String answer = "";
+
+		for (int i = 0; i < m; i++) {
+			answer += (int)Double.parseDouble(solution.get(i).toString()) + " ";
+		}
+
+		answer = answer.replaceAll(" ", ", ");
+		answer = answer.substring(0, answer.length()-2);
+		
+		answer = prefix + answer;
+		answer += "]";
+
+		System.out.println(answer);
+	}
+
     public static Vector scalarMult(double scalar, Vector a) {
         Vector c = (Vector) a.clone();
 		for (int i = 0; i < a.size(); i++) {
         	double value = scalar * Double.parseDouble(a.get(i).toString());
         	c.set(i, value);
         }
-            
         return c;
     }
 	
