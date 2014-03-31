@@ -1,6 +1,7 @@
 package edu.uncfsu.csc490;
 
 import java.io.IOException;
+//just a test
 import java.io.RandomAccessFile;
 import java.util.Collections;
 import java.util.Vector;
@@ -18,7 +19,7 @@ public class IntegerEquationsSolver extends Utils {
 
 		//String filename = "in/3by3.txt";
 		//String filename = "in/letter_h.txt";
-		String filename = "in/example87.txt";
+		String filename = "in/example85.txt";
 
 		int count = 0;
 		int lines = 0;
@@ -63,7 +64,7 @@ public class IntegerEquationsSolver extends Utils {
 		Vector[] M1 = M.clone();
 
 		M1 = LLL.reduce(M1);
-		M1 = KR.weightReduce(M1);
+		//M1 = KR.weightReduce(M1);
 
 		// showcase the results
 		System.out.println("**************************************************\n");
@@ -103,10 +104,10 @@ public class IntegerEquationsSolver extends Utils {
 		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
 
 		// 8.5
-		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
+		B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
 
 		// 8.7
-		B.add(6665);
+		//B.add(6665);
 
 		B = negate(B);
 		
