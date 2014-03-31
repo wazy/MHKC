@@ -50,7 +50,7 @@ public class KR extends Utils {
 		
 		for (int i = 0; i < M.length; i++) {
 			temp[i] = magnitude(M[i]);
-			lookup[i] = magnitude(M[i]);
+			lookup[i] = temp[i];
 		}
 		
 		Arrays.sort(temp);
@@ -59,7 +59,6 @@ public class KR extends Utils {
 			for (int j = 0; j < lookup.length; j++) {
 				if (lookup[j] == temp[i]) {
 					M1[i] = (Vector) M[j].clone();
-					break;
 				}
 			}
 		}

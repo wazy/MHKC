@@ -64,31 +64,55 @@ public class IntegerEquationsSolver extends Utils {
 		Vector[] M1 = M.clone();
 
 		M1 = LLL.reduce(M1);
-		//M1 = KR.weightReduce(M1);
 
+		printResults(M, M1, 1);
+		
+	}
+
+	/** 
+	 * this prints the result of the attempt to break MHKC
+	 * 
+	 * @param M the original vectors
+	 * @param M1 the reduced vectors either by KR or LLL
+	 * @param flag determines whether LLL == 1 or KR == 2 was used
+	 */
+	private static void printResults(Vector[] M, Vector[] M1, int flag) {
 		// showcase the results
 		System.out.println("**************************************************\n");
-		print("M is:", A);
-		print("M' is:", M1);
+		print("M is:", M);
+
+		if (flag == 1)
+			print("M' is:", M1);
+		else
+			print("M'' is:", M1);
+
 		System.out.println("**************************************************\n");
 
 		System.out.println("Weight of M is: " + weight(M));
-		System.out.println("Weight of M' is: " + weight(M1));
 
-		// redundant --> LLL should not terminate unless it is reduced
-		if (LLL.reducedBasis)
-			System.out.println("\nM' is reduced.");
+		if (flag == 1)
+			System.out.println("Weight of M' is: " + weight(M1));
+		else
+			System.out.println("Weight of M'' is: " + weight(M1));
 		
+		// search for a solution in the reduced vectors
 		Vector U = solveKnapsack(M1);
+
 		if (U == null) {
 			System.out.println("\nNo solution found!");
+
+			if (flag == 1) {
+				System.out.println("\nTrying KR to generate M''...\n");
+				M1 = KR.weightReduce(M1);
+				printResults(M, M1, 2);
+			}
 		}
 		else {
 			System.out.println("\nSolution found!");
 			printSolution(originalM, U);
-		}	
+		}
 	}
-	
+
 	public static Vector[] generateM(Vector[] A /*, Vector B */) {
 
 		// vectors (amount of columns) with (amount of rows) indices each

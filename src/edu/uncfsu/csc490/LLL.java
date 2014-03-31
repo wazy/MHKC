@@ -10,7 +10,9 @@ public class LLL extends Utils {
 
 	private static boolean done;
 	public static boolean reducedBasis;
-	
+
+	private final static double EPSILON = 1E-9; 	
+
 	public static Vector[] reduce(Vector[] b) {
 
 		n = b.length;
@@ -70,9 +72,10 @@ public class LLL extends Utils {
 			double lhs = calculateLHS(a[j][j+1], b1[j], b1[j+1]); 
 			double rhs = calculateRHS(b1[j]);
 			
-			//System.out.println(lhs + " < " + rhs);
-			
-			if (lhs < rhs) {
+			System.out.println(lhs + " < " + rhs);
+
+			// add an epsilon to take care of roundoff error
+			if (lhs + EPSILON < rhs) {
 				swap(b, j);
 				return false;
 			}
