@@ -1,22 +1,21 @@
 package edu.uncfsu.csc490;
 
-import java.util.Arrays;
 import java.util.Vector;
 
 @SuppressWarnings("rawtypes")
 public class KR extends Utils {
 	public static Vector[] weightReduce(Vector[] M) {
 		sortVectors(M);
-		
+
 		M = LLL.reduce(M);
+
+		int n = M.length; // vectors
+		int m = M[0].size(); // indices
 		
-		int n = M.length;
-		int m = M[0].size();
+		double[][] delta = new double [m][n];
 		
-		double[][] delta = new double [n][m];
-		
-		for (int i = 0; i < n-1; i++) {
-			for (int j = 0; j < n-1; j++) {
+		for (int i = 0; i <= n-1; i++) {
+			for (int j = 0; j <= n-1; j++) {
 				delta[i][j] = dotProduct(M[i], M[j]);
 			}
 		}
@@ -41,28 +40,29 @@ public class KR extends Utils {
 	}
 	
 	// sort basis vectors by magnitude (swap sort)
-	public static Vector[] sortVectors(Vector[] M) {
+	public static void sortVectors(Vector[] M) {
 
 		double[] temp = new double[M.length]; 
-		double[] lookup = new double[M.length];
 
-		Vector[] M1 = new Vector[M.length];
-		
-		for (int i = 0; i < M.length; i++) {
+		for (int i = 0; i < M.length; i++)
 			temp[i] = magnitude(M[i]);
-			lookup[i] = temp[i];
-		}
 		
-		Arrays.sort(temp);
-		
-		for (int i = 0; i < temp.length; i++) {
-			for (int j = 0; j < lookup.length; j++) {
-				if (lookup[j] == temp[i]) {
-					M1[i] = (Vector) M[j].clone();
+		boolean hasChanged;
+		do {
+			hasChanged = false;
+			for (int i = 0; i < temp.length-1; i++) {
+				if (temp[i] > temp[i+1]) {
+					double tem = temp[i];
+					temp[i] = temp[i+1];
+					temp[i+1] = tem;
+					
+					Vector tempV = M[i];
+					M[i] = M[i+1];
+					M[i+1] = tempV;
+					
+					hasChanged = true;
 				}
 			}
-		}
-
-		return M1;
+		} while(hasChanged);
 	}
 }

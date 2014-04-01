@@ -5,7 +5,9 @@ import java.util.Vector;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Utils {
-	
+
+	public final static double EPSILON = 1E-9; 	
+
 	// format to two decimal places and put a space in front
 	// if not negative to align columns
 	private static DecimalFormat df = new DecimalFormat(" 0.00;-0");
@@ -159,7 +161,7 @@ public class Utils {
 	// calculates weight from the delta matrix in KR
 	public static double weight(int n, double[][] delta) {
 		double weight = 1.0;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i <= n-1; i++) {
 				weight *= Math.sqrt(delta[i][i]);
 		}
 		return weight;

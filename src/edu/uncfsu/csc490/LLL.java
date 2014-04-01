@@ -11,8 +11,6 @@ public class LLL extends Utils {
 	private static boolean done;
 	public static boolean reducedBasis;
 
-	private final static double EPSILON = 1E-9; 	
-
 	public static Vector[] reduce(Vector[] b) {
 
 		n = b.length;
