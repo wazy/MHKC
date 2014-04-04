@@ -5,7 +5,7 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class KR extends Utils {
 	public static Vector[] weightReduce(Vector[] M) {
-		sortVectors(M);
+		//sortVectors(M);
 
 		M = LLL.reduce(M);
 
