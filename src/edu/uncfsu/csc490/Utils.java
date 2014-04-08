@@ -26,20 +26,26 @@ public class Utils {
 		}
 		return c;
     }
-	
-	public static double dotProduct(Vector a, Vector b) {
-		  if(a.size() != b.size()) {
-			  System.out.println("Invalid dimensions - trying to find dot product");
-			  System.exit(1);
-		  }
 
-		  double sum = 0;
-		  for(int i = 0; i < a.size(); i++)
-			  sum += Double.parseDouble(a.elementAt(i).toString()) * 
-			  				Double.parseDouble(b.elementAt(i).toString()); 
-		  
-		  return sum;
-		}
+    public static double dotProduct(Vector a) {
+    	Vector b = (Vector) a.clone();
+    	
+    	double sum = 0;
+    	for (int i = 0; i < a.size(); i++)
+    		sum += Double.parseDouble(a.elementAt(i).toString()) * 
+    						Double.parseDouble(b.elementAt(i).toString()); 
+
+    	return sum;
+    }
+
+	public static double dotProduct(Vector a, Vector b) {
+	   	double sum = 0;
+    	for (int i = 0; i < a.size(); i++)
+    		sum += Double.parseDouble(a.elementAt(i).toString()) * 
+    						Double.parseDouble(b.elementAt(i).toString()); 
+
+    	return sum;
+    }
 	
     public static double magnitude(Vector a) {
         return Math.sqrt(dotProduct(a, a));
@@ -115,14 +121,14 @@ public class Utils {
 
 	// LHS for checking reduced basis using vector B1[j], B1[j+1] and a scalar
 	public static double calculateLHS(double scalar, Vector Bj, Vector Bj1) {
-		return Math.pow(magnitude(add(Bj1, scalarMult(scalar, Bj))), 2); 
+		return dotProduct(add(Bj1, scalarMult(scalar, Bj))); 
 	}
 	
 	// RHS for checking reduced basis using vector B1[j]
 	public static double calculateRHS(Vector Bj) {
-		return .75 * Math.pow(magnitude(Bj), 2);
+		return .75 * dotProduct(Bj);
 	}
-	
+
 	/* transpose vector -- algorithm uses column vectors not row vectors */
 	public static Vector[] transpose(Vector[] b) {
 		int n = b.length;

@@ -19,7 +19,7 @@ public class IntegerEquationsSolver extends Utils {
 
 		//String filename = "in/3by3.txt";
 		//String filename = "in/letter_h.txt";
-		String filename = "in/example85.txt";
+		String filename = "in/example84_1.txt";
 
 		int count = 0;
 		int lines = 0;
@@ -125,10 +125,10 @@ public class IntegerEquationsSolver extends Utils {
 		//B.add(419);
 
 		// 8.4
-		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
+		B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
 
 		// 8.5
-		B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
+		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
 
 		// 8.7
 		//B.add(6665);
