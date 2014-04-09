@@ -1,7 +1,6 @@
 package edu.uncfsu.csc490;
 
 import java.io.IOException;
-//just a test
 import java.io.RandomAccessFile;
 import java.util.Collections;
 import java.util.Vector;
@@ -13,127 +12,39 @@ public class IntegerEquationsSolver extends Utils {
 	public static int originalN = 0;
 	public static int originalM = 0;
 
-	public static void main(String[] args) throws IOException {
+	/**
+	 * This method calls various supporting methods to break MHKC.
+	 * @param A The public key.
+	 * @param B The sum representing the encrypted letter.
+	 * @return The vector containing the solution (if any).
+	 */
+	public static Vector solve(Vector[] A, Vector B) {
 
-		String line = null;
-
-		//String filename = "in/example85.txt";
-		String filename = "in/public_key.txt";
-
-		int count = 0;
-		int lines = 0;
-
-		// for file I/O
-		RandomAccessFile in = new RandomAccessFile(filename, "r");
-		
-		// count number of lines
-		while (in.readLine() != null) {
-			lines++;
-		}
-
-		// allocate enough memory dynamically
-		Vector[] A = new Vector[lines];
-
-		// reset to beginning of file
-		in.seek(0);
-
-		// populate vector array
-		while((line = in.readLine()) != null) {
-			String[] strArr = line.split(" ");
-			A[count] = new Vector(strArr.length);
-			Collections.addAll(A[count], strArr);
-			count++;
-		}
-
-		in.close();
-
-		if (A[0] == null) {
-			System.out.println("Fatal: vectors are null");
-			System.exit(1);
-		}
-		
 		originalN = A.length;
 		originalM = A[0].size();
-		
+
 		A = transpose(A);
 
-		Vector[] M = generateM(A);
-
-		// transpose M and calculate M'
+		Vector[] M = generateM(A, B);
 		Vector[] M1 = M.clone();
 
 		M1 = LLL.reduce(M1);
 
-		printResults(M, M1, 1);
-		
+		Vector result = printResults(M, M1, 1);
+
+		return result;
 	}
 
-	/** 
-	 * this prints the result of the attempt to break MHKC
-	 * 
-	 * @param M the original vectors
-	 * @param M1 the reduced vectors either by KR or LLL
-	 * @param flag determines whether LLL (1) or KR (2) was used
+	/**
+	 * This method generates the M matrix that includes the A, B, and I matrices.
+	 * @param A The transposed public key.
+	 * @param B The sum representing the encrypted letter.
+	 * @return The assembled M matrix.
 	 */
-	private static void printResults(Vector[] M, Vector[] M1, int flag) {
-		// showcase the results
-		System.out.println("**************************************************\n");
-		print("M is:", M);
-
-		if (flag == 1)
-			print("M' is:", M1);
-		else
-			print("M'' is:", M1);
-
-		System.out.println("**************************************************\n");
-
-		System.out.println("Weight of M is: " + weight(M));
-
-		if (flag == 1)
-			System.out.println("Weight of M' is: " + weight(M1));
-		else
-			System.out.println("Weight of M'' is: " + weight(M1));
-		
-		// search for a solution in the reduced vectors
-		Vector U = solveKnapsack(M1);
-
-		if (U == null) {
-			System.out.println("\nNo solution found!");
-
-			if (flag == 1) {
-				System.out.println("\nTrying KR to generate M''...\n");
-				M1 = KR.weightReduce(M1);
-				printResults(M, M1, 2);
-			}
-		}
-		else {
-			System.out.println("\nSolution found!");
-			printSolution(originalM, U);
-		}
-	}
-
-	public static Vector[] generateM(Vector[] A /*, Vector B */) {
+	public static Vector[] generateM(Vector[] A, Vector B) {
 
 		// vectors (amount of columns) with (amount of rows) indices each
 		System.out.println("M has " + (originalM + 1) + " vectors with " + (originalN + originalM) + " indices.\n");
-
-		// TODO: this vector will be passed in as a parameter
-		Vector B = new Vector(originalN);
-
-		// the letter h in binary is 01101000
-		B.add(419);
-
-		// the letter i in binary is 01101001
-		//B.add(442);
-
-		// 8.4
-		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
-
-		// 8.5
-		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
-
-		// 8.7
-		//B.add(6665);
 
 		B = negate(B);
 
@@ -168,6 +79,53 @@ public class IntegerEquationsSolver extends Utils {
 		}
 		
 		return M;
+	}
+
+	/** 
+	 * this prints the result of the attempt to break MHKC
+	 * 
+	 * @param M the original vectors
+	 * @param M1 the reduced vectors either by KR or LLL
+	 * @param flag determines whether LLL (1) or KR (2) was used
+	 * @return 
+	 */
+	private static Vector printResults(Vector[] M, Vector[] M1, int flag) {
+		// showcase the results
+		System.out.println("**************************************************\n");
+		print("M is:", M);
+
+		if (flag == 1)
+			print("M' is:", M1);
+		else
+			print("M'' is:", M1);
+
+		System.out.println("**************************************************\n");
+
+		System.out.println("Weight of M is: " + weight(M));
+
+		if (flag == 1)
+			System.out.println("Weight of M' is: " + weight(M1));
+		else
+			System.out.println("Weight of M'' is: " + weight(M1));
+		
+		// search for a solution in the reduced vectors
+		Vector U = solveKnapsack(M1);
+
+		if (U == null) {
+			System.out.println("\nNo solution found!");
+
+			if (flag == 1) {
+				System.out.println("\nTrying KR to generate M''...\n");
+				M1 = KR.weightReduce(M1);
+				return printResults(M, M1, 2);
+			}
+		}
+		else {
+			System.out.println("\nSolution found!");
+			U = printSolution(originalM, U);
+			return U;
+		}
+		return U;
 	}
 
 	/**
@@ -255,5 +213,78 @@ public class IntegerEquationsSolver extends Utils {
 				return false;
 		}
 		return true;
+	}
+
+	// placeholder for testing purposes (non MHKC related testing)
+	// this can be run directly outside of the main BreakMHKC loop
+	public static void main(String[] args) throws IOException {
+
+		String line = null;
+
+		//String filename = "in/example85.txt";
+		String filename = "in/public_key.txt";
+
+		int count = 0;
+		int lines = 0;
+
+		// for file I/O
+		RandomAccessFile in = new RandomAccessFile(filename, "r");
+		
+		// count number of lines
+		while (in.readLine() != null) {
+			lines++;
+		}
+
+		// allocate enough memory dynamically
+		Vector[] A = new Vector[lines];
+
+		// reset to beginning of file
+		in.seek(0);
+
+		// populate vector array
+		while((line = in.readLine()) != null) {
+			String[] strArr = line.split(" ");
+			A[count] = new Vector(strArr.length);
+			Collections.addAll(A[count], strArr);
+			count++;
+		}
+
+		in.close();
+
+		if (A[0] == null) {
+			System.out.println("Fatal: vectors are null");
+			System.exit(1);
+		}
+		
+		originalN = A.length;
+		originalM = A[0].size();
+		
+		A = transpose(A);
+
+		Vector B = new Vector(originalN);
+
+		// the letter h in binary is 01101000
+		B.add(419);
+
+		// the letter i in binary is 01101001
+		//B.add(442);
+
+		// 8.4
+		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
+
+		// 8.5
+		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
+
+		// 8.7
+		//B.add(6665);
+		
+		Vector[] M = generateM(A, B);
+
+		// transpose M and calculate M'
+		Vector[] M1 = M.clone();
+
+		M1 = LLL.reduce(M1);
+
+		printResults(M, M1, 1);	
 	}
 }

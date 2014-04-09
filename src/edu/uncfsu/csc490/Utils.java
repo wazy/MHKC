@@ -63,16 +63,21 @@ public class Utils {
      * This method will print U, the solution vector.
      * @param m The index of the solution is from 0 to m in the vector.
      * @param solution The solution vector.
+     * @return 
      */
-    public static void printSolution(int m, Vector solution) {    		
+    public static Vector printSolution(int m, Vector solution) {    		
 		/* Note: most of this code is for formatting
 		   e.g. U = [1, 0, 0, 0, 1, 0, 0, 1, 0, 0] */
 
 		String prefix = "U = [";
 		String answer = "";
 
+		Vector result = new Vector(m);
+		
 		for (int i = 0; i < m; i++) {
-			answer += Math.abs((int)Double.parseDouble(solution.get(i).toString())) + " ";
+			int res = Math.abs((int)Double.parseDouble(solution.get(i).toString()));
+			answer += res + " ";
+			result.add(res);
 		}
 
 		answer = answer.replaceAll(" ", ", ");
@@ -82,6 +87,8 @@ public class Utils {
 		answer += "]";
 
 		System.out.println(answer);
+
+		return result;
 	}
 
     public static Vector scalarMult(double scalar, Vector a) {
