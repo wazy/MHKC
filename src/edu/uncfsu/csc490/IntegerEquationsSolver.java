@@ -122,8 +122,7 @@ public class IntegerEquationsSolver extends Utils {
 		}
 		else {
 			System.out.println("\nSolution found!");
-			U = printSolution(originalM, U);
-			return U;
+			return printSolution(originalM, U);
 		}
 		return U;
 	}
