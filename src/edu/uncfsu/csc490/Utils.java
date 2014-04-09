@@ -59,22 +59,25 @@ public class Utils {
     	return B;
     }
 
-    // print U if a solution is found after reduction
-	public static void printSolution(int m, Vector solution) {
-		
+    /**
+     * This method will print U, the solution vector.
+     * @param m The index of the solution is from 0 to m in the vector.
+     * @param solution The solution vector.
+     */
+    public static void printSolution(int m, Vector solution) {    		
 		/* Note: most of this code is for formatting
 		   e.g. U = [1, 0, 0, 0, 1, 0, 0, 1, 0, 0] */
-		
+
 		String prefix = "U = [";
 		String answer = "";
 
 		for (int i = 0; i < m; i++) {
-			answer += (int)Double.parseDouble(solution.get(i).toString()) + " ";
+			answer += Math.abs((int)Double.parseDouble(solution.get(i).toString())) + " ";
 		}
 
 		answer = answer.replaceAll(" ", ", ");
 		answer = answer.substring(0, answer.length()-2);
-		
+
 		answer = prefix + answer;
 		answer += "]";
 

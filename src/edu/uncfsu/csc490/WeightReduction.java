@@ -8,21 +8,12 @@ public class WeightReduction extends Utils {
 	private static double[] epilson = {-1.0, 1.0};
 	
 	@SuppressWarnings("rawtypes")
-	public static Vector[] wtReduct(Vector[] v) {
+	public static Vector[] wtReduct(Vector[] v, double[][] deltaArr) {
+
 		int n = v.length;
-		int m = v[0].size();
-
-		delta = new double [m][n];
-
-		// global delta ij, 1<=i,j<=n
-		// delta i,j = b[i] * b[j]
-		for (int i = 0; i <= n-1; i++){
-			for (int j = 0; j <= n-1; j++) {
-				delta[i][j] = (dotProduct(v[i], v[j]));
-			}
-		}
-
 		int k = 0;
+
+		delta = deltaArr;
 
 		//for i <- i+1 to n
 		for (int i = 0; i <= n-1; i++) {
@@ -36,9 +27,9 @@ public class WeightReduction extends Utils {
 						k = i;
 
 					Vector temp = add(v[i], scalarMult(epsil, v[j]));
-					double value = Math.pow(magnitude(temp), 2);
+					double value = dotProduct(temp);
 
-					if (value + EPSILON < delta[k][k]) {
+					if (value < delta[k][k]) {
 						//delta k,k <- delta i,i + delta j,j + 2t delta i,j
 						delta[k][k] = delta[i][i] + delta[j][j] + (2.0 * epsil * delta[i][j]);
 

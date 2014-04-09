@@ -72,8 +72,7 @@ public class LLL extends Utils {
 			
 			System.out.println(lhs + " < " + rhs);
 
-			// add an epsilon to take care of roundoff error
-			if (lhs + EPSILON < rhs) {
+			if (lhs < rhs) {
 				swap(b, j);
 				return false;
 			}

@@ -27,11 +27,7 @@ public class GramSchmidt extends Utils {
 					System.exit(1);
 				}
 
-				double one = dotProduct(v1[i], v[j]);
-				double two = dotProduct(v1[i]);
-				a[i][j] = one / two;
-				
-				System.out.println(one + " / " + two + " = " + a[i][j]);
+				a[i][j] = dotProduct(v1[i], v[j]) / dotProduct(v1[i]);
 
 				v1[j] = subtract(v1[j], (scalarMult(a[i][j], v1[i])));
 			}

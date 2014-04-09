@@ -5,7 +5,8 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class KR extends Utils {
 	public static Vector[] weightReduce(Vector[] M) {
-		//sortVectors(M);
+
+		sortVectors(M);
 
 		M = LLL.reduce(M);
 
@@ -24,22 +25,26 @@ public class KR extends Utils {
 		
 		boolean done = false;
 		while (!done) {
-			M = WeightReduction.wtReduct(M);
+			sortVectors(M);
+			M = WeightReduction.wtReduct(M, delta);
 
 			delta = WeightReduction.getDelta();
 
-			double new1 = weight(n, delta);
+			double newWeight = weight(n, delta);
 
-			if (new1 < weight)
-				weight = new1;
+			if (newWeight < weight)
+				weight = newWeight;
 			else
 				done = true;
 		}
-		
+
 		return M;
 	}
-	
-	// sort basis vectors by magnitude (swap sort)
+
+	/**
+	 * This method sorts basis vectors by magnitude (a swap sort).
+	 * @param M The vectors to be sorted.
+	 */
 	public static void sortVectors(Vector[] M) {
 
 		double[] temp = new double[M.length]; 

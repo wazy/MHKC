@@ -17,9 +17,8 @@ public class IntegerEquationsSolver extends Utils {
 
 		String line = null;
 
-		//String filename = "in/3by3.txt";
-		//String filename = "in/letter_h.txt";
-		String filename = "in/example84_1.txt";
+		//String filename = "in/example85.txt";
+		String filename = "in/public_key.txt";
 
 		int count = 0;
 		int lines = 0;
@@ -38,7 +37,7 @@ public class IntegerEquationsSolver extends Utils {
 		// reset to beginning of file
 		in.seek(0);
 
-		// populate vectory array
+		// populate vector array
 		while((line = in.readLine()) != null) {
 			String[] strArr = line.split(" ");
 			A[count] = new Vector(strArr.length);
@@ -74,7 +73,7 @@ public class IntegerEquationsSolver extends Utils {
 	 * 
 	 * @param M the original vectors
 	 * @param M1 the reduced vectors either by KR or LLL
-	 * @param flag determines whether LLL == 1 or KR == 2 was used
+	 * @param flag determines whether LLL (1) or KR (2) was used
 	 */
 	private static void printResults(Vector[] M, Vector[] M1, int flag) {
 		// showcase the results
@@ -122,10 +121,13 @@ public class IntegerEquationsSolver extends Utils {
 		Vector B = new Vector(originalN);
 
 		// the letter h in binary is 01101000
-		//B.add(419);
+		B.add(419);
+
+		// the letter i in binary is 01101001
+		//B.add(442);
 
 		// 8.4
-		B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
+		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
 
 		// 8.5
 		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
@@ -134,10 +136,10 @@ public class IntegerEquationsSolver extends Utils {
 		//B.add(6665);
 
 		B = negate(B);
-		
-		// create a new matrx n+m by m+1
+
+		// create a new matrix n+m by m+1
 		Vector[] M = new Vector[originalM + 1];
-		
+
 		int n = M.length;
 		int m = originalN + originalM;
 
@@ -167,7 +169,12 @@ public class IntegerEquationsSolver extends Utils {
 		
 		return M;
 	}
-	
+
+	/**
+	 * This method will search the vector array for a solution.
+	 * @param M1 The vector array possibly containing a solution.
+	 * @return The vector if a solution is found, otherwise null.
+	 */
 	public static Vector solveKnapsack(Vector[] M1) {
 
 		// vectors (amount of columns) with (amount of rows) indices each
@@ -177,7 +184,7 @@ public class IntegerEquationsSolver extends Utils {
 
 		// if vector solves the knapsack return true 
 		for (int i = 0; i < n; i++) {
-			if (vectorInRange(M1[i])) {
+			if (vectorInRangePositive(M1[i]) || vectorInRangeNegative(M1[i])) {
 				result = i;
 				break;
 			}
@@ -188,18 +195,57 @@ public class IntegerEquationsSolver extends Utils {
 
 		return M1[result];
 	}
-	
-	public static boolean vectorInRange(Vector v) {
+
+	/**
+	 * This method checks if the first m elements are in range {0, 1}.
+	 * @param v The vector to check if it contains a solution or not.
+	 * @return True if a solution to this lattice.
+	 */
+	public static boolean vectorInRangePositive(Vector v) {
 
 		for (int i = 0; i < originalM; i++) {
-			String value = v.get(i).toString();			
+			String value = v.get(i).toString();
 			value = value.replace(".0", "");
 			int n = Integer.parseInt(value);
 
 			if ((n != 0) && (n != 1))
-					return false;
+				return false;
 		}
 		
+		if (!mZeros(v))
+			return false;
+		
+		return true;
+	}
+
+	/**
+	 * This method checks if the first m elements are in range {0, -1}.
+	 * @param v The vector to check if it contains a solution or not.
+	 * @return True if a solution to this lattice.
+	 */
+	public static boolean vectorInRangeNegative(Vector v) {
+
+		for (int i = 0; i < originalM; i++) {
+			String value = v.get(i).toString();
+			value = value.replace(".0", "");
+			int n = Integer.parseInt(value);
+
+			if ((n != 0) && (n != -1))
+				return false;
+		}
+
+		if (!mZeros(v))
+			return false;
+
+		return true;
+	}
+
+	/**
+	 * This method checks if there are m zeros in a column following the original number of indices.
+	 * @param v The vector to check if it contains a solution or not.
+	 * @return If true means we have a solution.
+	 */
+	public static boolean mZeros(Vector v) {
 		for (int i = originalM; i < v.size(); i++) {
 			String value = v.get(i).toString();
 			value = value.replace(".0", "");
@@ -208,7 +254,6 @@ public class IntegerEquationsSolver extends Utils {
 			if (n != 0)
 				return false;
 		}
-		
 		return true;
 	}
 }
