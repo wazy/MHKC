@@ -32,6 +32,13 @@ public class IntegerEquationsSolver extends Utils {
 
 		Vector result = printResults(M, M1, 1);
 
+		// try an alternative basis in hopes of breaking this ciphertext
+		if (result == null) {
+			M1 = alternativeBasis(M);
+			M1 = LLL.reduce(M1);
+			result = printResults(M, M1, 1);
+		}
+
 		return result;
 	}
 
@@ -79,6 +86,30 @@ public class IntegerEquationsSolver extends Utils {
 		}
 		
 		return M;
+	}
+
+	/**
+	 * This method will generate an alternative basis for M.
+	 * @param m The original basis.
+	 * @return The alternative basis.
+	 */
+	private static Vector[] alternativeBasis(Vector[] b) {
+		int n = b.length; // vectors
+		int m = b[0].size(); // indices
+
+		double N = .5 * Math.sqrt(n);
+
+		// set all zeros in last vector to 1/2
+		for (int i = 0; i < m-1; i++) {
+			b[n-1].set(i, .5);
+		}
+
+		// multiply the last index of each vector by N
+		for (int i = 0; i < n; i++) {
+			b[i].set(m-1, Double.parseDouble(b[i].get(m-1).toString()) * N);
+		}
+
+		return b;
 	}
 
 	/** 
@@ -159,12 +190,16 @@ public class IntegerEquationsSolver extends Utils {
 	 * @return True if a solution to this lattice.
 	 */
 	public static boolean vectorInRangePositive(Vector v) {
-
 		for (int i = 0; i < originalM; i++) {
 			String value = v.get(i).toString();
 			value = value.replace(".0", "");
-			int n = Integer.parseInt(value);
-
+			double n;
+			try {
+				n = Integer.parseInt(value);
+			}
+			catch (Exception e) {
+				n = Double.parseDouble(value);
+			}
 			if ((n != 0) && (n != 1))
 				return false;
 		}
@@ -181,7 +216,6 @@ public class IntegerEquationsSolver extends Utils {
 	 * @return True if a solution to this lattice.
 	 */
 	public static boolean vectorInRangeNegative(Vector v) {
-
 		for (int i = 0; i < originalM; i++) {
 			String value = v.get(i).toString();
 			value = value.replace(".0", "");
@@ -284,6 +318,6 @@ public class IntegerEquationsSolver extends Utils {
 
 		M1 = LLL.reduce(M1);
 
-		printResults(M, M1, 1);	
+		printResults(M, M1, 1);
 	}
 }
