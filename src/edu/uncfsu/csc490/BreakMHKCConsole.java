@@ -108,7 +108,7 @@ public class BreakMHKCConsole {
 
 		// put binary array to string
 		for (int i = 0; i < m; i++)
-			res += ((BigDecimal) result.get(i)).toPlainString();
+			res += result.get(i).toString();
 
 		int charCode = Integer.parseInt(res, 2);
 

@@ -24,7 +24,7 @@ public class Utils {
 		for (int i = 0; i < m; i++) {
 			BigDecimal value = ((BigDecimal) a.elementAt(i))
 								.add((BigDecimal) b.elementAt(i)); 
-			c.set(i, value);
+			c.add(value);
 		}
 		return c;
     }
@@ -103,8 +103,8 @@ public class Utils {
 
 		for (int i = 0; i < m; i++) {
 			BigDecimal value = ((BigDecimal) a.elementAt(i))
-								.subtract((BigDecimal) b.elementAt(i)); 
-			c.set(i, value);
+								.subtract((BigDecimal) b.elementAt(i));
+			c.add(value);
 		}
 		return c;
     }
@@ -191,7 +191,7 @@ public class Utils {
 	public static void print(Vector[] b) {
 		for (int i = 0; i < b[0].size(); i++) {  // cols
 			for (int j = 0; j < b.length; j++) { // rows
-				System.out.print(df.format(((BigDecimal) b[j].get(i)).toPlainString()) + " ");
+				System.out.print(df.format(Double.parseDouble(b[j].get(i).toString())) + " ");
 			}
 			System.out.print("\n");
 		}
@@ -219,7 +219,7 @@ public class Utils {
 	public static void print(BigDecimal[][] a) {
 		for (int i = 0; i < a.length; i++) {
 			for (int j = 0; j < a[0].length; j++)
-				System.out.print(df.format(a[i][j].toPlainString()) + " ");
+				System.out.print(df.format(Double.parseDouble(a[j][i].toPlainString())) + " ");
 
 			System.out.println();
 		}

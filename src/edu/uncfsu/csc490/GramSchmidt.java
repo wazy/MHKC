@@ -17,11 +17,17 @@ public class GramSchmidt extends Utils {
 
 		a = new BigDecimal[m][n];
 
+		for (int i = 0; i < a.length; i++) {
+			for (int j = 0; j < a[0].length; j++) {
+				a[i][j] = new BigDecimal("0");
+			}
+		}
+		
 		v1[0] = v[0];
 
 		for (int j = 1; j <= n-1; j++) {
 			v1[j] = v[j];
-			
+
 			for (int i = 0; i <= (j-1); i++) {
 
 				if (v1[i] == null || v[j] == null) {
@@ -42,4 +48,3 @@ public class GramSchmidt extends Utils {
 		return a;
 	}
 }
- 

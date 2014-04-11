@@ -25,7 +25,7 @@ public class LLL extends Utils {
 		a = GramSchmidt.getA();
 
 		print("Initial Vectors:", b);
-		print("Initial Gramm-Schmidt:", b1);
+		print("Initial Gram-Schmidt:", b1);
 		print("Printing initial A:", a);
 
 		done = false;
@@ -52,7 +52,7 @@ public class LLL extends Utils {
 			a = GramSchmidt.getA();
 			
 			print("Vectors after reduction, iteration " + count + ":", b);
-			print("Gramm-Schmidt after reduction, iteration " + count + ":", b1);
+			print("Gram-Schmidt after reduction, iteration " + count + ":", b1);
 			print("A after reduction, iteration " + count + ":", a);
 			
 			// check whether we have a reduced basis or not
