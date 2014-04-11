@@ -1,5 +1,6 @@
 package edu.uncfsu.csc490;
 
+import java.math.BigDecimal;
 import java.util.Vector;
 
 @SuppressWarnings("rawtypes")
@@ -63,13 +64,13 @@ public class LLL extends Utils {
 		return b;
 	}
 	
-	public static boolean isReducedBasis(Vector[] b, Vector[] b1, double[][] a) {
+	public static boolean isReducedBasis(Vector[] b, Vector[] b1, BigDecimal[][] a) {
 
 		// checks whether we are reduced for all vectors
 		for (int j = 0; j < n-1; j++) {
 			double lhs = calculateLHS(a[j][j+1], b1[j], b1[j+1]); 
 			double rhs = calculateRHS(b1[j]);
-			
+
 			System.out.println(lhs + " < " + rhs);
 
 			if (lhs < rhs) {

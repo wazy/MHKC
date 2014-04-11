@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.Vector;
 
 public class BreakMHKCConsole {
@@ -21,23 +21,26 @@ public class BreakMHKCConsole {
 
 		// for file I/O
 		RandomAccessFile in = new RandomAccessFile(filename, "r");
-		
+	
 		// count number of lines
 		while (in.readLine() != null) {
 			lines++;
 		}
 
-		// allocate enough memory dynamically
+		// allocate enough vectors dynamically
 		Vector[] A = new Vector[lines];
 
 		// reset to beginning of file
 		in.seek(0);
 
-		// populate vector array
+		// populate vector array with big decimals (integer values)
 		while((line = in.readLine()) != null) {
 			String[] strArr = line.split(" ");
 			A[count] = new Vector(strArr.length);
-			Collections.addAll(A[count], strArr);
+
+			for (int i = 0; i < strArr.length; i++) {
+				A[count].add(new BigDecimal(strArr[i]));
+			}
 			count++;
 		}
 
@@ -48,6 +51,7 @@ public class BreakMHKCConsole {
 			System.exit(1);
 		}
 
+		// public key is the first (and probably only vector)
 		System.out.print("The public key is: ");
 		for (int i = 0; i < A[0].size(); i++) {
 			System.out.print(A[0].get(i) + " ");
@@ -56,10 +60,10 @@ public class BreakMHKCConsole {
 		System.out.println();
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+
 		int n = A.length;
 		int m = A[0].size();
-		
+
 		boolean done = false;
 		while (!done) {
 
@@ -73,17 +77,16 @@ public class BreakMHKCConsole {
 			for (int i = 0; i < strArr.length; i++) {
 				Vector B = new Vector(n);
 
-				for (int j = 0; j < n; j++) {
-					B.add(Integer.parseInt(strArr[i]));					
-				}
+				for (int j = 0; j < n; j++)
+					B.add(new BigDecimal(strArr[i]));					
 
 				Vector result = IntegerEquationsSolver.solve(A, B);
-				
+
 				ans += printBinaryToASCIIResult(m, result);
 			}
 
 			System.out.println("\n\nThe decrypted text is: " + ans);
-			
+
 			System.out.println("\nWould you like to continue y/n? ");
 			System.out.print(">>> ");
 
@@ -104,14 +107,13 @@ public class BreakMHKCConsole {
 		String ans = "";
 
 		// put binary array to string
-		for (int i = 0; i < m; i++) {
-			res += result.get(i);
-		}
-		
+		for (int i = 0; i < m; i++)
+			res += ((BigDecimal) result.get(i)).toPlainString();
+
 		int charCode = Integer.parseInt(res, 2);
-	
+
 		ans += new Character((char)charCode).toString();
-		
+
 		return ans;
 	}
 }

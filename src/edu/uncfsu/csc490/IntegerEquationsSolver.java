@@ -2,6 +2,7 @@ package edu.uncfsu.csc490;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -64,11 +65,11 @@ public class IntegerEquationsSolver extends Utils {
 		// set identity matrix -- diagonal of 1's
 		for (int i = 0; i < n; i++) {
 			M[i] = new Vector(m);
-			for (int j = 0; j < originalM; j++) {
-				M[i].add(0);
-			}
+			for (int j = 0; j < originalM; j++)
+				M[i].add(new BigDecimal("0"));
+
 			if (i != n-1)
-				M[i].set(i, 1);
+				M[i].set(i, new BigDecimal("1"));
 		}
 
 		// copy A's values into the new matrix
@@ -84,7 +85,7 @@ public class IntegerEquationsSolver extends Utils {
 		for (int j = n; j <= m; j++) {
 			M[n-1].add(B.get(idx++));
 		}
-		
+
 		return M;
 	}
 
@@ -193,20 +194,15 @@ public class IntegerEquationsSolver extends Utils {
 		for (int i = 0; i < originalM; i++) {
 			String value = v.get(i).toString();
 			value = value.replace(".0", "");
-			double n;
-			try {
-				n = Integer.parseInt(value);
-			}
-			catch (Exception e) {
-				n = Double.parseDouble(value);
-			}
+			int n = Integer.parseInt(value);
+
 			if ((n != 0) && (n != 1))
 				return false;
 		}
-		
+
 		if (!mZeros(v))
 			return false;
-		
+
 		return true;
 	}
 
