@@ -1,5 +1,6 @@
 package edu.uncfsu.csc490;
 
+import java.math.BigDecimal;
 import java.util.Vector;
 
 @SuppressWarnings("rawtypes")
@@ -13,7 +14,7 @@ public class KR extends Utils {
 		int n = M.length; // vectors
 		int m = M[0].size(); // indices
 		
-		double[][] delta = new double [m][n];
+		BigDecimal[][] delta = new BigDecimal [m][n];
 		
 		for (int i = 0; i <= n-1; i++) {
 			for (int j = 0; j <= n-1; j++) {
@@ -21,7 +22,7 @@ public class KR extends Utils {
 			}
 		}
 		
-		double weight = weight(n, delta);
+		BigDecimal weight = weight(n, delta);
 		
 		boolean done = false;
 		while (!done) {
@@ -30,9 +31,9 @@ public class KR extends Utils {
 
 			delta = WeightReduction.getDelta();
 
-			double newWeight = weight(n, delta);
+			BigDecimal newWeight = weight(n, delta);
 
-			if (newWeight < weight)
+			if (newWeight.compareTo(weight) < 0)
 				weight = newWeight;
 			else
 				done = true;
@@ -47,7 +48,7 @@ public class KR extends Utils {
 	 */
 	public static void sortVectors(Vector[] M) {
 
-		double[] temp = new double[M.length]; 
+		BigDecimal[] temp = new BigDecimal[M.length]; 
 
 		for (int i = 0; i < M.length; i++)
 			temp[i] = magnitude(M[i]);
@@ -56,8 +57,8 @@ public class KR extends Utils {
 		do {
 			hasChanged = false;
 			for (int i = 0; i < temp.length-1; i++) {
-				if (temp[i] > temp[i+1]) {
-					double tem = temp[i];
+				if (temp[i].compareTo(temp[i+1]) > 0) {
+					BigDecimal tem = temp[i];
 					temp[i] = temp[i+1];
 					temp[i+1] = tem;
 					

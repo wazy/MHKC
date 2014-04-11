@@ -19,43 +19,39 @@ public class Utils {
 
 	// TODO: write vector class that incorporates most vector operations
     public static Vector add(Vector a, Vector b) {
-		Vector c = (Vector)a.clone();
-		for (int i = 0; i < a.size(); i++) {
-			double value = Double.parseDouble(a.elementAt(i).toString()) + 
-							Double.parseDouble(b.elementAt(i).toString()); 
+		int m = a.size();
+    	Vector c = new Vector(m);
+		for (int i = 0; i < m; i++) {
+			BigDecimal value = ((BigDecimal) a.elementAt(i))
+								.add((BigDecimal) b.elementAt(i)); 
 			c.set(i, value);
 		}
 		return c;
     }
 
-    public static double dotProduct(Vector a) {
+    public static BigDecimal dotProduct(Vector a) {
     	Vector b = (Vector) a.clone();
-    	
-    	double sum = 0;
+    	return dotProduct(a, b);
+
+    }
+
+	public static BigDecimal dotProduct(Vector a, Vector b) {
+    	BigDecimal sum = new BigDecimal("0");
     	for (int i = 0; i < a.size(); i++)
-    		sum += Double.parseDouble(a.elementAt(i).toString()) * 
-    						Double.parseDouble(b.elementAt(i).toString()); 
+    		sum = sum.add((((BigDecimal) a.elementAt(i))
+    						.multiply((BigDecimal) b.elementAt(i))));
 
     	return sum;
     }
 
-	public static double dotProduct(Vector a, Vector b) {
-	   	double sum = 0;
-    	for (int i = 0; i < a.size(); i++)
-    		sum += Double.parseDouble(a.elementAt(i).toString()) * 
-    						Double.parseDouble(b.elementAt(i).toString()); 
-
-    	return sum;
+    public static BigDecimal magnitude(Vector a) {
+        return sqrt(dotProduct(a));
     }
 
-    public static double magnitude(Vector a) {
-        return Math.sqrt(dotProduct(a, a));
-    }
-
-    // negate the vector by subtracting from zero
+    // negate each BigDecimal in the vector
     public static Vector negate(Vector B) {
     	for (int i = 0; i < B.size(); i++) {
-			B.set(i, (0 - Integer.parseInt(B.get(i).toString())));
+			B.set(i, ((BigDecimal) B.get(i)).negate());
 		}
     	return B;
     }
@@ -92,19 +88,22 @@ public class Utils {
 		return result;
 	}
 
-    public static Vector scalarMult(BigDecimal a2, Vector a) {
+    public static Vector scalarMult(BigDecimal scalar, Vector a) {
     	Vector c = (Vector) a.clone();
 		for (int i = 0; i < a.size(); i++)
-			c.set(i, a2.multiply(((BigDecimal) a.get(i))));
+			c.set(i, scalar.multiply(((BigDecimal) a.get(i))));
 
 		return c;
 	}
 
-    public static Vector subtract(Vector a, Vector b) {
-		Vector c = (Vector) a.clone();
-		for (int i = 0; i < a.size(); i++) {
-			double value = Double.parseDouble(a.elementAt(i).toString()) - 
-							Double.parseDouble(b.elementAt(i).toString()); 
+    public static Vector subtract(Vector a, Vector b) {    	
+    	int m = a.size();
+
+    	Vector c = new Vector(m);
+
+		for (int i = 0; i < m; i++) {
+			BigDecimal value = ((BigDecimal) a.elementAt(i))
+								.subtract((BigDecimal) b.elementAt(i)); 
 			c.set(i, value);
 		}
 		return c;
@@ -117,9 +116,8 @@ public class Utils {
 								"different dimensions or out of bounds j!");
 			System.exit(1);
 		}
-		
-		Vector temp = new Vector(b[j].size());
-		temp = b[j];
+
+		Vector temp = b[j];
 		b[j] = b[j+1];
 		b[j+1] = temp;
 	}
@@ -130,13 +128,13 @@ public class Utils {
 	/***                               ***/
 
 	// LHS for checking reduced basis using vector B1[j], B1[j+1] and a scalar
-	public static double calculateLHS(BigDecimal a, Vector Bj, Vector Bj1) {
+	public static BigDecimal calculateLHS(BigDecimal a, Vector Bj, Vector Bj1) {
 		return dotProduct(add(Bj1, scalarMult(a, Bj))); 
 	}
 
 	// RHS for checking reduced basis using vector B1[j]
-	public static double calculateRHS(Vector Bj) {
-		return .75 * dotProduct(Bj);
+	public static BigDecimal calculateRHS(Vector Bj) {
+		return dotProduct(Bj).multiply(new BigDecimal(".75"));
 	}
 
 	/* transpose vector -- algorithm uses column vectors not row vectors */
@@ -165,11 +163,11 @@ public class Utils {
 		return r;
 	}
 
-	// calculates weight (volume) of the vector array 
-	public static double weight(Vector[] b) {
-		double weight = 1.0;
+	// calculates weight of the vector array 
+	public static BigDecimal weight(Vector[] b) {
+		BigDecimal weight = new BigDecimal("1.0");
 		for (int i = 0; i < b.length; i++) {
-				weight *= magnitude(b[i]);
+			weight = weight.multiply(magnitude(b[i]));
 		}
 		return weight;
 	}
@@ -177,7 +175,7 @@ public class Utils {
 	// calculates weight from the delta matrix in KR
 	public static BigDecimal weight(int n, BigDecimal[][] delta) {
 		BigDecimal weight = new BigDecimal("1.0");
-		for (int i = 0; i <= n-1; i++) {
+		for (int i = 0; i < n; i++) {
 			weight = weight.multiply(delta[i][i]);
 		}
 		return weight;

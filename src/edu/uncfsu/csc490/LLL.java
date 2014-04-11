@@ -1,13 +1,14 @@
 package edu.uncfsu.csc490;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Vector;
 
 @SuppressWarnings("rawtypes")
 public class LLL extends Utils {
 
 	private static int n; // vectors
-	private static double[][] a;
+	private static BigDecimal[][] a;
 
 	private static boolean done;
 	public static boolean reducedBasis;
@@ -30,13 +31,16 @@ public class LLL extends Utils {
 		done = false;
 		reducedBasis = false;
 
+		BigDecimal oneHalf = new BigDecimal(".5");
+
 		while (!done)
 		{
 			// attempt to reduce the vectors
 			for (int j = 1; j <= n-1; j++) {
 				for (int i = j-1; i >= 0; i--) {				
-					if (Math.abs(a[i][j]) > .5) {
-						b[j] = subtract(b[j], scalarMult(Math.floor(a[i][j]+.5), b[i]));
+					if ((a[i][j].abs()).compareTo(oneHalf) > 0) {
+						b[j] = subtract(b[j], scalarMult((a[i][j].add(oneHalf))
+										.setScale(0, RoundingMode.FLOOR), b[i]));
 					}
 				}
 			}
@@ -68,12 +72,12 @@ public class LLL extends Utils {
 
 		// checks whether we are reduced for all vectors
 		for (int j = 0; j < n-1; j++) {
-			double lhs = calculateLHS(a[j][j+1], b1[j], b1[j+1]); 
-			double rhs = calculateRHS(b1[j]);
+			BigDecimal lhs = calculateLHS(a[j][j+1], b1[j], b1[j+1]); 
+			BigDecimal rhs = calculateRHS(b1[j]);
 
 			System.out.println(lhs + " < " + rhs);
 
-			if (lhs < rhs) {
+			if (lhs.compareTo(rhs) < 0) {
 				swap(b, j);
 				return false;
 			}

@@ -1,10 +1,12 @@
 package edu.uncfsu.csc490;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Vector;
 
 public class GramSchmidt extends Utils {
 
-	private static double a[][];
+	private static BigDecimal[][] a;
 
 	@SuppressWarnings("rawtypes")
 	public static Vector[] process(Vector[] v) {
@@ -13,7 +15,7 @@ public class GramSchmidt extends Utils {
 
 		Vector[] v1 = new Vector[n];
 
-		a = new double[m][n];
+		a = new BigDecimal[m][n];
 
 		v1[0] = v[0];
 
@@ -27,7 +29,7 @@ public class GramSchmidt extends Utils {
 					System.exit(1);
 				}
 
-				a[i][j] = dotProduct(v1[i], v[j]) / dotProduct(v1[i]);
+				a[i][j] = (dotProduct(v1[i], v[j])).divide(dotProduct(v1[i]), MathContext.DECIMAL128);
 
 				v1[j] = subtract(v1[j], (scalarMult(a[i][j], v1[i])));
 			}
@@ -36,7 +38,7 @@ public class GramSchmidt extends Utils {
 		return v1;
 	}
 
-	public static double[][] getA() {
+	public static BigDecimal[][] getA() {
 		return a;
 	}
 }
