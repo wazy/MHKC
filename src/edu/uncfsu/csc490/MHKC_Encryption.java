@@ -62,6 +62,16 @@ public class MHKC_Encryption {
 		}
 	}
 	
+	public static String generateCipher(String text){
+		cipherHolder = new int[text.length()];
+		encrypt(text);
+		String result = "";
+		for (int i = 0; i < cipherHolder.length; i++) {
+			result += cipherHolder[i] + " ";
+		}
+		return result;
+	}
+	
 	public static void main(String[] args) {
 
 		//generatePublicKey();

@@ -3,25 +3,34 @@ package edu.uncfsu.csc490;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
 import java.awt.Color;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
+
 import javax.swing.JTextArea;
+
 import java.awt.SystemColor;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GUI {
 
+	
 	private JFrame frmMhkcUser;
 	private JTextField txtClient;
+	
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -58,22 +67,34 @@ public class GUI {
 		lblTheMerkleHellman.setFont(new Font("DejaVu Sans Light", Font.ITALIC, 24));
 		
 		txtClient = new JTextField();
-		txtClient.setText(">>>  ");
+		txtClient.setText(">>> ");
 		txtClient.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 12));
 		txtClient.setBackground(SystemColor.scrollbar);
 		txtClient.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Encrypt & Send");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnNewButton.setForeground(Color.BLACK);
-		btnNewButton.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 12));
-		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		textArea.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 14));
 		textArea.setBackground(SystemColor.scrollbar);
+		textArea.setEditable(false);
+		
+		ActionListener atl = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String text = txtClient.getText();
+				String cipher = MHKC_Encryption.generateCipher(text.substring(4));
+				textArea.append(text + "\n");
+				textArea.append(cipher + "\n");
+				txtClient.setText(">>> ");
+				
+			}
+		};
+		txtClient.addActionListener(atl);
+		
+		JButton btnNewButton = new JButton("Encrypt & Send");
+		btnNewButton.setForeground(Color.BLACK);
+		btnNewButton.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 12));
+		btnNewButton.addActionListener(atl);
+		
+
 		GroupLayout groupLayout = new GroupLayout(frmMhkcUser.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
