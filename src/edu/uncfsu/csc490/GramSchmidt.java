@@ -2,7 +2,6 @@ package edu.uncfsu.csc490;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Vector;
 
 public class GramSchmidt extends Utils {

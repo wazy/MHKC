@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class BreakMHKCConsole {
+
+	// read in the ascii values and their ciphertexts for faster lookup
+	public static HashMap<Integer, String> asciiLookup = new HashMap<Integer, String>(94);
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] args) throws IOException {
@@ -21,7 +25,7 @@ public class BreakMHKCConsole {
 
 		// for file I/O
 		RandomAccessFile in = new RandomAccessFile(filename, "r");
-	
+		
 		// count number of lines
 		while (in.readLine() != null) {
 			lines++;
@@ -73,19 +77,33 @@ public class BreakMHKCConsole {
 			String[] strArr = br.readLine().split(" ");
 
 			String ans = "";
-
+			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < strArr.length; i++) {
 				Vector B = new Vector(n);
 
 				for (int j = 0; j < n; j++)
-					B.add(new BigDecimal(strArr[i]));					
+					B.add(new BigDecimal(strArr[i]));
 
-				Vector result = IntegerEquationsSolver.solve(A, B);
+				String res = "";
+				int value = Integer.parseInt(strArr[i]);
 
-				ans += printBinaryToASCIIResult(m, result);
+				if (asciiLookup.containsKey(value)) {
+					res = asciiLookup.get(value);
+				}
+				else {
+					Vector result = IntegerEquationsSolver.solve(A, B);
+
+					res = printBinaryToASCIIResult(m, result);
+
+					asciiLookup.put(value, res);
+				}
+				ans += res;
 			}
+			long endTime = System.currentTimeMillis();
 
 			System.out.println("\n\nThe decrypted text is: " + ans);
+
+			System.out.println("\nRuntime was clocked at approximately: " + ((endTime-startTime)/1000) + " seconds.");
 
 			System.out.println("\nWould you like to continue y/n? ");
 			System.out.print(">>> ");
@@ -109,6 +127,8 @@ public class BreakMHKCConsole {
 		// put binary array to string
 		for (int i = 0; i < m; i++)
 			res += result.get(i).toString();
+
+		System.out.println(res);
 
 		int charCode = Integer.parseInt(res, 2);
 

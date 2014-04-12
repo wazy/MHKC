@@ -34,12 +34,12 @@ public class IntegerEquationsSolver extends Utils {
 		Vector result = printResults(M, M1, 1);
 
 		// TODO: try an alternative basis in hopes of breaking this ciphertext
-/*		if (result == null) {
+		if (result == null) {
 			M1 = alternativeBasis(M);
 			M1 = LLL.reduce(M1);
 			result = printResults(M, M1, 1);
 		}
-*/
+
 		return result;
 	}
 

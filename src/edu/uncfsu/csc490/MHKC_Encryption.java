@@ -12,7 +12,7 @@ public class MHKC_Encryption {
 	public static int I = 263; // modulo
 	public static int R = 31; // multiplier
 
-	private static String text = "abcdefghijklmnopqrstuvwxyz";
+	private static String text = "HashMap in Java is one of the most popular Collection class among Java programmers. After by article How HashMap works in Java, which describes theory part of Java HashMap ,I thought to share, How to use HashMap in Java with fundamental HashMap examples, but couldn't do that and it was slipped. HashMap is a a data structure, based on hashing, which allows you to store object as key value pair, advantage of using HashMap is that, you can retrieve object on constant time i.e. O(1), if you know the key. HashMap implements Map interface and supports Generics from Java 1.5 release, which makes it type safe. There are couple of more Collections, which provides similar functionalities like HashMap, which can also be used to store key value pair. Hashtable is one of them, but Hashtable is synchronized and performs poor in single threaded environment. See Hashtable vs HashMap for complete differences between them. Another one, relatively new is ConcurrentHashMap, which provides better performance than Hashtable in concurrent environment and should be preferred. See difference between ConcurrentHashMap and HashMap for detail differences. In this Java tutorial, we will see different examples of  HashMap, like adding and removing entries, iterating over Java HashMap, checking size map, finding if a key or value exists on Map and various other examples, which we used frequently.";
 	
 	public static int gcd(int a, int b) {
 		if (b == 0) 
@@ -48,11 +48,11 @@ public class MHKC_Encryption {
 		/* nasty way to multiply each bit by the public key index and sum */
 		for (int i = 0; i < binaryString.length; i++) {
 			String bi = Integer.toBinaryString(binaryString[i]);
-			if (bi.length() < 8)
+			while (bi.length() < 8)
 				bi = "0" + bi;
-			
+
 			char arr[] = bi.toCharArray();
-			
+
 			for (int j = 0; j < arr.length; j++) {
 				int result = (((int) arr[j])-48) * publicKey[j];
 				//System.out.println((((int) arr[i])-48) + " " + publicKey[i] + " = " + result);
