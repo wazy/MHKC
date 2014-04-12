@@ -97,6 +97,10 @@ public class BreakMHKCConsole {
 
 					asciiLookup.put(value, res);
 				}
+				
+				if (res.charAt(0) < ' ')
+					res = "*";
+
 				ans += res;
 			}
 			long endTime = System.currentTimeMillis();
@@ -127,8 +131,6 @@ public class BreakMHKCConsole {
 		// put binary array to string
 		for (int i = 0; i < m; i++)
 			res += result.get(i).toString();
-
-		System.out.println(res);
 
 		int charCode = Integer.parseInt(res, 2);
 

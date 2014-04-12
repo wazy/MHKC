@@ -286,7 +286,7 @@ public class IntegerEquationsSolver extends Utils {
 		Vector B = new Vector(originalN);
 
 		// the letter h in binary is 01101000
-		B.add(419);
+		B.add(new BigDecimal("419"));
 
 		// the letter i in binary is 01101001
 		//B.add(442);
