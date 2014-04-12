@@ -2,6 +2,7 @@ package edu.uncfsu.csc490;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Vector;
 
 public class GramSchmidt extends Utils {
@@ -22,7 +23,7 @@ public class GramSchmidt extends Utils {
 				a[i][j] = new BigDecimal("0");
 			}
 		}
-		
+
 		v1[0] = v[0];
 
 		for (int j = 1; j <= n-1; j++) {
@@ -35,7 +36,8 @@ public class GramSchmidt extends Utils {
 					System.exit(1);
 				}
 
-				a[i][j] = (dotProduct(v1[i], v[j])).divide(dotProduct(v1[i]), MathContext.DECIMAL128);
+				a[i][j] = (dotProduct(v1[i], v[j]))
+							.divide(dotProduct(v1[i]), MathContext.DECIMAL128);
 
 				v1[j] = subtract(v1[j], (scalarMult(a[i][j], v1[i])));
 			}

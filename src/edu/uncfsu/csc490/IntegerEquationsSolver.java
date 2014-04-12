@@ -194,10 +194,7 @@ public class IntegerEquationsSolver extends Utils {
 	 */
 	public static boolean vectorInRangePositive(Vector v) {
 		for (int i = 0; i < originalM; i++) {
-			String value = v.get(i).toString();
-			value = value.replace(".0", "");
-			int n = Integer.parseInt(value);
-
+			int n = ((BigDecimal)v.get(i)).intValue();
 			if ((n != 0) && (n != 1))
 				return false;
 		}
@@ -215,10 +212,7 @@ public class IntegerEquationsSolver extends Utils {
 	 */
 	public static boolean vectorInRangeNegative(Vector v) {
 		for (int i = 0; i < originalM; i++) {
-			String value = v.get(i).toString();
-			value = value.replace(".0", "");
-			int n = Integer.parseInt(value);
-
+			int n = ((BigDecimal)v.get(i)).intValue();
 			if ((n != 0) && (n != -1))
 				return false;
 		}
@@ -236,10 +230,7 @@ public class IntegerEquationsSolver extends Utils {
 	 */
 	public static boolean mZeros(Vector v) {
 		for (int i = originalM; i < v.size(); i++) {
-			String value = v.get(i).toString();
-			value = value.replace(".0", "");
-			int n = Integer.parseInt(value);
-
+			int n = ((BigDecimal)v.get(i)).intValue();
 			if (n != 0)
 				return false;
 		}

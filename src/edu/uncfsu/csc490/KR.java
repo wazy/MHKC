@@ -26,17 +26,18 @@ public class KR extends Utils {
 		
 		boolean done = false;
 		while (!done) {
-			sortVectors(M);
+
 			M = WeightReduction.wtReduct(M, delta);
 
 			delta = WeightReduction.getDelta();
 
 			BigDecimal newWeight = weight(n, delta);
-
+ 
 			if (newWeight.compareTo(weight) < 0)
 				weight = newWeight;
 			else
 				done = true;
+
 		}
 
 		return M;

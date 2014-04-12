@@ -12,7 +12,8 @@ public class Utils {
 	// format to two decimal places and put a space in front
 	// if not negative to align columns
 	private static DecimalFormat df = new DecimalFormat(" 0.00;-0");
-	
+
+
 	/***                         ***/
 	/*** BEGIN Vector Operations ***/
 	/***                         ***/
@@ -178,12 +179,18 @@ public class Utils {
 		for (int i = 0; i < n; i++) {
 			weight = weight.multiply(delta[i][i]);
 		}
-		return weight;
+		return sqrt(weight);
 	}
 
-	// 32 digits precision with square roots of BigDecimals
+	// 32 digits of precision with square roots of BigDecimals
 	public static BigDecimal sqrt(BigDecimal value) {
-		BigDecimal x = new BigDecimal(Math.sqrt(value.doubleValue()));
+		
+		double val = Math.sqrt(value.doubleValue());
+		
+		if (Double.isNaN(val) || Double.isInfinite(val))
+			return value;
+
+		BigDecimal x = new BigDecimal(val);
 		return x.add(new BigDecimal(value.subtract(x.multiply(x)).doubleValue() / (x.doubleValue() * 2.0)));
 	}
 

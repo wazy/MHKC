@@ -12,7 +12,7 @@ public class MHKC_Encryption {
 	public static int I = 263; // modulo
 	public static int R = 31; // multiplier
 
-	private static String test = "o";
+	private static String text = "abcdefghijklmnopqrstuvwxyz";
 	
 	public static int gcd(int a, int b) {
 		if (b == 0) 
@@ -65,17 +65,17 @@ public class MHKC_Encryption {
 
 		//generatePublicKey();
 
-		cipherHolder = new int[test.length()];
+		cipherHolder = new int[text.length()];
 
 		/* initialize each letters cipher to zero */
 		for (int i = 0; i < cipherHolder.length; i++) {
 			cipherHolder[i] = 0;
 		}
 
-		encrypt(test);
+		encrypt(text);
 
 		/* print summary of the encryption process and result */
-		System.out.print("The ciphertext output for '" + test + "' is => ");
+		System.out.print("The ciphertext output for '" + text + "' is => ");
 		for (int i = 0; i < cipherHolder.length; i++) {
 			System.out.print(cipherHolder[i] + " ");
 		}
