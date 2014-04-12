@@ -1,4 +1,4 @@
-package edu.uncfsu.csc490;
+package edu.uncfsu.csc.MHKC.EncryptDecrypt;
 
 import java.util.Random;
 

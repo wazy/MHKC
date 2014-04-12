@@ -1,58 +1,96 @@
-package edu.uncfsu.csc490;
-
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
+package edu.uncfsu.csc.MHKC.Client;
 
 import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Font;
-
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import edu.uncfsu.csc.MHKC.EncryptDecrypt.MHKC_Encryption;
 
-import javax.swing.JTextArea;
+public class ClientGUI {
 
-import java.awt.SystemColor;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-public class GUI {
-
-	
 	private JFrame frmMhkcUser;
+	private static JTextArea textArea;
 	private JTextField txtClient;
+	private JButton btnNewButton;
+	private JLabel lblTheMerkleHellman;
 	
-	private JTextArea textArea;
+	private static BufferedReader in;
+	private static BufferedWriter out;
+
+	private static boolean running = true;
+
+	private static String username = "Joe";
 
 	/**
 	 * Launch the application.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException, IOException {
+
+		Socket socket = SocketHandler.fetchSocket();
+
+		in = new BufferedReader(new InputStreamReader(
+									socket.getInputStream()));
+
+		out = new BufferedWriter(new OutputStreamWriter(
+									socket.getOutputStream()));
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GUI window = new GUI();
+					ClientGUI window = new ClientGUI();
 					window.frmMhkcUser.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+
+		out.write(username);
+		out.flush();
+
+		while (running) {
+			String message = in.readLine();
+			textArea.append(message);
+		};
+
+		out.close();
+		SocketHandler.closeSocket(socket);
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public GUI() {
+	public ClientGUI() {
 		initialize();
+	}
+
+	/**
+	 * This method will attempt to send the cipher to the server.
+	 * @param cipher The encrypted text.
+	 * @throws IOException 
+	 */
+	protected void sendToServer(String cipher) throws IOException {
+		out.write(cipher);
+		out.flush();
 	}
 
 	/**
@@ -62,38 +100,43 @@ public class GUI {
 		frmMhkcUser = new JFrame();
 		frmMhkcUser.getContentPane().setBackground(Color.DARK_GRAY);
 		
-		JLabel lblTheMerkleHellman = new JLabel("The Merkle-Hellman Knapsack Cryptosystem");
+		lblTheMerkleHellman = new JLabel("The Merkle-Hellman Knapsack Cryptosystem");
 		lblTheMerkleHellman.setForeground(Color.GREEN);
 		lblTheMerkleHellman.setFont(new Font("DejaVu Sans Light", Font.ITALIC, 24));
-		
+
 		txtClient = new JTextField();
 		txtClient.setText(">>> ");
 		txtClient.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 12));
 		txtClient.setBackground(SystemColor.scrollbar);
 		txtClient.setColumns(10);
-		
+
 		textArea = new JTextArea();
 		textArea.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 14));
 		textArea.setBackground(SystemColor.scrollbar);
 		textArea.setEditable(false);
-		
-		ActionListener atl = new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				String text = txtClient.getText();
-				String cipher = MHKC_Encryption.generateCipher(text.substring(4));
-				textArea.append(text + "\n");
-				textArea.append(cipher + "\n");
-				txtClient.setText(">>> ");
-				
-			}
-		};
-		txtClient.addActionListener(atl);
-		
-		JButton btnNewButton = new JButton("Encrypt & Send");
+
+		btnNewButton = new JButton("Encrypt & Send");
 		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 12));
+
+		ActionListener atl = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				// remove the >>> from user input 
+				String text = txtClient.getText().substring(4);
+				String cipher = MHKC_Encryption.generateCipher(text) + "\n";
+
+				try {
+					sendToServer(cipher);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+				txtClient.setText(">>> ");
+			}
+		};
+
+		txtClient.addActionListener(atl);
 		btnNewButton.addActionListener(atl);
-		
 
 		GroupLayout groupLayout = new GroupLayout(frmMhkcUser.getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -127,8 +170,17 @@ public class GUI {
 					.addContainerGap(59, Short.MAX_VALUE))
 		);
 		frmMhkcUser.getContentPane().setLayout(groupLayout);
-		frmMhkcUser.setTitle("MHKC User");
+		frmMhkcUser.setTitle("MHKC Group Chat");
 		frmMhkcUser.setBounds(100, 100, 724, 409);
 		frmMhkcUser.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		frmMhkcUser.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        running = false;
+		    }
+		});
+		
+		running = true;
 	}
 }

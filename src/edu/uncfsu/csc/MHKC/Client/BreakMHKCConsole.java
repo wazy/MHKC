@@ -1,4 +1,4 @@
-package edu.uncfsu.csc490;
+package edu.uncfsu.csc.MHKC.Client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Vector;
+
+import edu.uncfsu.csc.MHKC.LatticeReduction.IntegerEquationsSolver;
 
 public class BreakMHKCConsole {
 
