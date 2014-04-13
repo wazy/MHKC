@@ -64,12 +64,12 @@ public class ClientGUI {
 			}
 		});
 
-		out.write(username);
+		out.write(username + "\n");
 		out.flush();
 
 		while (running) {
 			String message = in.readLine();
-			textArea.append(message);
+			textArea.append(message + "\n");
 		};
 
 		out.close();
@@ -90,6 +90,7 @@ public class ClientGUI {
 	 */
 	protected void sendToServer(String cipher) throws IOException {
 		out.write(cipher);
+		out.write("\n");
 		out.flush();
 	}
 
@@ -123,7 +124,7 @@ public class ClientGUI {
 			public void actionPerformed(ActionEvent e){
 				// remove the >>> from user input 
 				String text = txtClient.getText().substring(4);
-				String cipher = MHKC_Encryption.generateCipher(text) + "\n";
+				String cipher = MHKC_Encryption.generateCipher(text);
 
 				try {
 					sendToServer(cipher);
@@ -132,6 +133,7 @@ public class ClientGUI {
 				}
 
 				txtClient.setText(">>> ");
+				txtClient.requestFocus();
 			}
 		};
 
