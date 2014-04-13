@@ -25,7 +25,7 @@ public class ClientConnection implements Runnable {
 					socket.getInputStream()));
 
 			this.clientName = in.readLine();
-			
+
 			String nextLine;
 			while ((nextLine = in.readLine()) != null) {
 				String message = this.clientName + ": " + nextLine + "\n";

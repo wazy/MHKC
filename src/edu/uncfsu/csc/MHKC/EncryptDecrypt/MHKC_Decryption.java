@@ -88,6 +88,9 @@ public class MHKC_Decryption {
 	 */
 	public static String generatePlainText(String cipher){
 		
+		if (cipher == null)
+			return "";
+		
 		BigInteger I = new BigInteger(String.valueOf(MHKC_Encryption.I));
 		BigInteger R = new BigInteger(String.valueOf(MHKC_Encryption.R));
 
@@ -114,12 +117,8 @@ public class MHKC_Decryption {
 			//					" mod " + I.toString() + " = " + V[j].toString());
 			int charCode = Integer.parseInt(V[j], 2);
 			
-			if ((char)charCode == '@') {
-				result += " ";
-			}
-			else {
-				result += new Character((char)charCode).toString();
-			}
+			result += new Character((char)charCode).toString();
+			
 		}
 		return result;
 	}
