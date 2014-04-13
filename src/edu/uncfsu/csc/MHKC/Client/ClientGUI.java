@@ -69,8 +69,9 @@ public class ClientGUI {
 		out.flush();
 
 		while (running) {
+			String user = in.readLine();
 			String message = MHKC_Decryption.generatePlainText(in.readLine());
-			textArea.append(message + "\n");
+			textArea.append(user + ": " + message + "\n");
 		};
 
 		out.close();

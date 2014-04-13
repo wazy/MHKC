@@ -28,7 +28,7 @@ public class ClientConnection implements Runnable {
 
 			String nextLine;
 			while ((nextLine = in.readLine()) != null) {
-				String message = this.clientName + ": " + nextLine + "\n";
+				String message = nextLine;
 
 				sendMessageToClients(message);
 
@@ -62,7 +62,8 @@ public class ClientConnection implements Runnable {
 			BufferedWriter brw = new BufferedWriter(
 									new OutputStreamWriter(
 									client.getOutputStream()));
-			brw.write(message);
+			brw.write(this.clientName + "\n");
+			brw.write(message + "\n");
 			brw.flush();
 		}
 		
