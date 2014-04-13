@@ -80,4 +80,47 @@ public class MHKC_Decryption {
 
 		return res;
 	}
+	
+	/**
+	 * This method returns the plaintext message to the ClientGUI
+	 * @param cipher is the encrypted message
+	 * @return decoded message
+	 */
+	public static String generatePlainText(String cipher){
+		
+		BigInteger I = new BigInteger(String.valueOf(MHKC_Encryption.I));
+		BigInteger R = new BigInteger(String.valueOf(MHKC_Encryption.R));
+
+		BigInteger[] Prk = {new BigInteger("1"), new BigInteger("3"), 
+				new BigInteger("6"), new BigInteger("13"), new BigInteger("27"), 
+				new BigInteger("52"), new BigInteger("104"), new BigInteger("238")};
+		
+		String[] arr = cipher.split(" ");
+		BigInteger[] cipherText = new BigInteger[arr.length];
+		
+		for (int i = 0; i < arr.length; i++) {
+			cipherText[i] = new BigInteger(arr[i]);
+		}
+		
+		String[] V = new String[cipherText.length];
+		
+		BigInteger reverseMod = R.modInverse(I);
+		String result = "";
+		
+		for (int j = 0; j < V.length; j++) {
+			BigInteger z = cipherText[j].multiply(reverseMod).mod(I);
+			V[j] = superIncreasingSolver(Prk, z);
+			//System.out.println(C[j].toString() + " x " + reverseMod.toString() + 
+			//					" mod " + I.toString() + " = " + V[j].toString());
+			int charCode = Integer.parseInt(V[j], 2);
+			
+			if ((char)charCode == '@') {
+				result += " ";
+			}
+			else {
+				result += new Character((char)charCode).toString();
+			}
+		}
+		return result;
+	}
 }

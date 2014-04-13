@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import edu.uncfsu.csc.MHKC.EncryptDecrypt.MHKC_Decryption;
 import edu.uncfsu.csc.MHKC.EncryptDecrypt.MHKC_Encryption;
 
 public class ClientGUI {
@@ -68,8 +69,8 @@ public class ClientGUI {
 		out.flush();
 
 		while (running) {
-			String message = in.readLine();
-			textArea.append(message);
+			String message = MHKC_Decryption.generatePlainText(in.readLine());
+			textArea.append(message + "\n");
 		};
 
 		out.close();
@@ -106,18 +107,18 @@ public class ClientGUI {
 
 		txtClient = new JTextField();
 		txtClient.setText(">>> ");
-		txtClient.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 12));
+		txtClient.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtClient.setBackground(SystemColor.scrollbar);
 		txtClient.setColumns(10);
 
 		textArea = new JTextArea();
-		textArea.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 14));
+		textArea.setFont(new Font("Arial", Font.PLAIN, 14));
 		textArea.setBackground(SystemColor.scrollbar);
 		textArea.setEditable(false);
 
 		btnNewButton = new JButton("Encrypt & Send");
 		btnNewButton.setForeground(Color.BLACK);
-		btnNewButton.setFont(new Font("DejaVu Sans Light", Font.PLAIN, 12));
+		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 14));
 
 		ActionListener atl = new ActionListener(){
 			public void actionPerformed(ActionEvent e){

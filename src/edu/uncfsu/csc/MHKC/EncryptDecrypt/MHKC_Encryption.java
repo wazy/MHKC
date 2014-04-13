@@ -61,7 +61,11 @@ public class MHKC_Encryption {
 			}
 		}
 	}
-	
+	/**
+	 * This Method is used to return the ciphertext to the ClientGUI
+	 * @param text original plaintext message
+	 * @return ciphertext message
+	 */
 	public static String generateCipher(String text){
 		cipherHolder = new int[text.length()];
 		encrypt(text);
