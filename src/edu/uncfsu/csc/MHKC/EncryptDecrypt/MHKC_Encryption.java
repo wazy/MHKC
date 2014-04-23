@@ -14,7 +14,7 @@ public class MHKC_Encryption {
 	public static int I = 793; // modulo
 	public static int R = 288; // multiplier
 
-	private static String text = "`";
+	private static String text = "hello";
 	public static int gcd(int a, int b) {
 		if (b == 0) 
 			return a;

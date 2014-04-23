@@ -7,9 +7,9 @@ public class WeightReduction extends Utils {
 	
 	private static BigDecimal[][] delta;
 	private static BigDecimal[] epilson = {new BigDecimal("-1.0"), new BigDecimal("1.0")};
-	
-	@SuppressWarnings("rawtypes")
-	public static Vector[] wtReduct(Vector[] v, BigDecimal[][] deltaArr) {
+
+	public static Vector<BigDecimal>[] wtReduct(Vector<BigDecimal>[] v,
+												BigDecimal[][] deltaArr) {
 
 		int n = v.length;
 		int k = 0;
@@ -27,7 +27,7 @@ public class WeightReduction extends Utils {
 					else
 						k = i;
 
-					Vector temp = add(v[i], scalarMult(epsil, v[j]));
+					Vector<BigDecimal> temp = add(v[i], scalarMult(epsil, v[j]));
 					BigDecimal value = dotProduct(temp);
 
 					if (value.compareTo(delta[k][k]) < 0) {

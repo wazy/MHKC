@@ -13,7 +13,7 @@ public class LLL extends Utils {
 	private static boolean done;
 	public static boolean reducedBasis;
 
-	public static Vector[] reduce(Vector[] b) {
+	public static Vector<BigDecimal>[] reduce(Vector<BigDecimal>[] b) {
 
 		n = b.length;
 

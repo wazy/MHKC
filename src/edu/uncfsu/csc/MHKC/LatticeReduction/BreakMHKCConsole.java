@@ -1,4 +1,4 @@
-package edu.uncfsu.csc.MHKC.Client;
+package edu.uncfsu.csc.MHKC.LatticeReduction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,8 +7,6 @@ import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Vector;
-
-import edu.uncfsu.csc.MHKC.LatticeReduction.IntegerEquationsSolver;
 
 public class BreakMHKCConsole {
 
@@ -122,7 +120,7 @@ public class BreakMHKCConsole {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static String printBinaryToASCIIResult(int m, Vector result) {
+	public static String printBinaryToASCIIResult(int m, Vector result) {
 
 		if (result == null)
 			return "*";

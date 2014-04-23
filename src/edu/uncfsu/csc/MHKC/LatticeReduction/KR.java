@@ -3,9 +3,9 @@ package edu.uncfsu.csc.MHKC.LatticeReduction;
 import java.math.BigDecimal;
 import java.util.Vector;
 
-@SuppressWarnings("rawtypes")
 public class KR extends Utils {
-	public static Vector[] weightReduce(Vector[] M) {
+	public static Vector<BigDecimal>[] weightReduce(
+									Vector<BigDecimal>[] M) {
 
 		sortVectors(M);
 
@@ -47,7 +47,7 @@ public class KR extends Utils {
 	 * This method sorts basis vectors by magnitude (a swap sort).
 	 * @param M The vectors to be sorted.
 	 */
-	public static void sortVectors(Vector[] M) {
+	public static void sortVectors(Vector<BigDecimal>[] M) {
 
 		BigDecimal[] temp = new BigDecimal[M.length]; 
 
@@ -63,7 +63,7 @@ public class KR extends Utils {
 					temp[i] = temp[i+1];
 					temp[i+1] = tem;
 					
-					Vector tempV = M[i];
+					Vector<BigDecimal> tempV = M[i];
 					M[i] = M[i+1];
 					M[i+1] = tempV;
 					

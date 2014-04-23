@@ -1,6 +1,7 @@
 package edu.uncfsu.csc.MHKC.LatticeReduction;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.Vector;
 
@@ -19,9 +20,10 @@ public class Utils {
 	/***                         ***/
 
 	// TODO: write vector class that incorporates most vector operations
-    public static Vector add(Vector a, Vector b) {
+    public static Vector<BigDecimal> add(
+    				Vector<BigDecimal> a, Vector<BigDecimal> b) {
 		int m = a.size();
-    	Vector c = new Vector(m);
+    	Vector<BigDecimal> c = new Vector(m);
 		for (int i = 0; i < m; i++) {
 			BigDecimal value = ((BigDecimal) a.elementAt(i))
 								.add((BigDecimal) b.elementAt(i)); 
@@ -29,6 +31,18 @@ public class Utils {
 		}
 		return c;
     }
+
+    public static Vector<BigDecimal> divide(Vector<BigDecimal> v, 
+    		BigDecimal magnitude) {
+
+    	Vector<BigDecimal> c = (Vector<BigDecimal>) v.clone();
+    	
+    	for (int i = 0; i < c.size(); i++) {
+			c.set(i, c.elementAt(i).divide(magnitude, MathContext.DECIMAL128));
+		}
+
+		return c;
+	}
 
     public static BigDecimal dotProduct(Vector a) {
     	Vector b = (Vector) a.clone();
@@ -89,18 +103,20 @@ public class Utils {
 		return result;
 	}
 
-    public static Vector scalarMult(BigDecimal scalar, Vector a) {
-    	Vector c = (Vector) a.clone();
+    public static Vector<BigDecimal> scalarMult(
+    							BigDecimal scalar, Vector<BigDecimal> a) {
+    	Vector<BigDecimal> c = (Vector<BigDecimal>) a.clone();
 		for (int i = 0; i < a.size(); i++)
 			c.set(i, scalar.multiply(((BigDecimal) a.get(i))));
 
 		return c;
 	}
 
-    public static Vector subtract(Vector a, Vector b) {    	
+    public static Vector<BigDecimal> subtract(
+    							Vector<BigDecimal> a, Vector<BigDecimal> b) {    	
     	int m = a.size();
 
-    	Vector c = new Vector(m);
+    	Vector<BigDecimal> c = new Vector(m);
 
 		for (int i = 0; i < m; i++) {
 			BigDecimal value = ((BigDecimal) a.elementAt(i))

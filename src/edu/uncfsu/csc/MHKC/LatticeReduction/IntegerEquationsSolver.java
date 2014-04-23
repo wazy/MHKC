@@ -243,8 +243,8 @@ public class IntegerEquationsSolver extends Utils {
 
 		String line = null;
 
-		//String filename = "in/example85.txt";
-		String filename = "in/public_key.txt";
+		String filename = "in/example85.txt";
+		//String filename = "in/public_key.txt";
 
 		int count = 0;
 		int lines = 0;
@@ -286,7 +286,7 @@ public class IntegerEquationsSolver extends Utils {
 		Vector B = new Vector(originalN);
 
 		// the letter h in binary is 01101000
-		B.add(new BigDecimal("419"));
+//		B.add(new BigDecimal("419"));
 
 		// the letter i in binary is 01101001
 		//B.add(442);
@@ -295,7 +295,9 @@ public class IntegerEquationsSolver extends Utils {
 		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(7);
 
 		// 8.5
-		//B.add(1); B.add(1); B.add(1); B.add(1); B.add(1); B.add(35);
+		B.add(new BigDecimal("1")); B.add(new BigDecimal("1"));
+		B.add(new BigDecimal("1")); B.add(new BigDecimal("1"));
+		B.add(new BigDecimal("1")); B.add(new BigDecimal("35"));
 
 		// 8.7
 		//B.add(6665);

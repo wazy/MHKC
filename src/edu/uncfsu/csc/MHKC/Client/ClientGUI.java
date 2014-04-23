@@ -18,6 +18,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -38,13 +40,16 @@ public class ClientGUI {
 
 	private static boolean running = true;
 
-	private static String username = "Joe";
+	private static String username = "Client";
 
 	/**
 	 * Launch the application.
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws InterruptedException, IOException {
+
+		// ask the user to put in their name for message identification
+		username = JOptionPane.showInputDialog(null, "Enter Your Name");
 
 		Socket socket = SocketHandler.fetchSocket();
 
@@ -102,7 +107,7 @@ public class ClientGUI {
 	private void initialize() {
 		frmMhkcUser = new JFrame();
 		frmMhkcUser.getContentPane().setBackground(Color.DARK_GRAY);
-		
+
 		lblTheMerkleHellman = new JLabel("The Merkle-Hellman Knapsack Cryptosystem");
 		lblTheMerkleHellman.setForeground(Color.GREEN);
 		lblTheMerkleHellman.setFont(new Font("DejaVu Sans Light", Font.ITALIC, 24));
@@ -112,6 +117,7 @@ public class ClientGUI {
 		txtClient.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtClient.setBackground(SystemColor.scrollbar);
 		txtClient.setColumns(10);
+		txtClient.requestFocus();
 
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -177,6 +183,9 @@ public class ClientGUI {
 		frmMhkcUser.setTitle("MHKC Group Chat");
 		frmMhkcUser.setBounds(100, 100, 724, 409);
 		frmMhkcUser.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JScrollPane scroll = new JScrollPane(textArea);
+		frmMhkcUser.getContentPane().add(scroll);
 		
 		frmMhkcUser.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
@@ -184,7 +193,7 @@ public class ClientGUI {
 		        running = false;
 		    }
 		});
-		
+
 		running = true;
 	}
 }
